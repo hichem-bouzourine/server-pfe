@@ -1,0 +1,311 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Type_User {
+  ADMIN
+  ARTISAN
+  CLIENT
+  FOURNISSEUR
+}
+
+model Utilisateur {
+  id_utilisateur      Int      @id @default(autoincrement())
+  nom                 String
+  prenom              String
+  date_de_naissance   DateTime
+  sexe                String
+  ville               String
+  adresse             String
+  email               String  @unique
+  password            String
+  telephone           String
+  type                Type_User
+  date_inscription    DateTime @default(now())
+  photo               String?
+  Administrateur      Administrateur?    
+  Artisan             Artisan?           
+  Client              Client?            
+  Fournisseur         Fournisseur?
+
+  messages            Message[]
+
+  reportedProfiles    SignalementProfil[] @relation("reported_profiles")
+  reportedBy          SignalementProfil[] @relation("reports")
+}
+
+model Administrateur {
+  id_admin        Int      @id
+  
+  Utilisateur     Utilisateur     @relation(fields: [id_admin], references: [id_utilisateur])
+
+  SignalementProfil SignalementProfil[]
+  SignalementOeuvre SignalementOeuvre[]
+  SignalementAvis SignalementAvis[]
+}
+
+model Artisan {
+  id_artisan       Int      @id
+  description      String
+  annee_experience Int
+  specialite       String
+  statutCompte     Boolean
+  
+  Utilisateur      Utilisateur     @relation(fields: [id_artisan], references: [id_utilisateur])
+  
+  Oeuvres          Oeuvre[]
+  Commandes        Commande[]       
+  Conversation     Conversation[]
+  Reponse          Reponse[]        
+}
+
+model Client {
+  id_client     Int      @id
+  preference_art     String?
+  
+  Utilisateur        Utilisateur @relation(fields: [id_client], references: [id_utilisateur])
+  
+  Achats              Achat[]
+  Conversation       Conversation[]
+  Notes               Note[] 
+  Avis               Avis[] 
+  SignalementOeuvre  SignalementOeuvre[] 
+  SignalementAvis    SignalementAvis[] 
+  ConsulteCategorie  ConsulteCategorie[] 
+  ConsulteOeuvre     ConsulteOeuvre[] 
+  Sauvegarde         Sauvegarde[] 
+}
+
+
+model Fournisseur {
+  id_fournisseur   Int      @id
+  specialite       String
+  statutCompte     Boolean
+  
+  Utilisateur      Utilisateur    @relation(fields: [id_fournisseur], references: [id_utilisateur])
+  
+  Fourniture       Fourniture[]
+  CommandesPrisesEnCharge    Commande[]
+}
+
+model Fourniture {
+  id_fourniture         Int           @id @default(autoincrement())
+  nom_fourniture        String
+  prix_fourniture       Float
+  photo                 String[]
+  stock_disponible      Int
+  id_fournisseur        Int
+  
+  fournisseur           Fournisseur  @relation(fields: [id_fournisseur], references: [id_fournisseur])
+  
+  commandeFournitures   CommandeFourniture[]
+  Commandes             Commande[]
+}
+
+model Commande {
+  id_commande       Int            @id @default(autoincrement())
+  etat_commande     Boolean
+  date_commande     DateTime
+  quantite          Int
+  adresse_livraison String
+  id_fourniture     Int
+  id_artisan        Int
+  id_fournisseur    Int
+  
+  fourniture        Fourniture    @relation(fields: [id_fourniture], references: [id_fourniture])
+  artisan           Artisan       @relation(fields: [id_artisan], references: [id_artisan])
+  fournisseur       Fournisseur   @relation(fields: [id_fournisseur], references: [id_fournisseur])
+  
+  comandeFournitures CommandeFourniture[]
+}
+
+model CommandeFourniture {
+  id_commande     Int       @unique
+  id_fourniture   Int
+  quantite        Int
+  
+  commande        Commande  @relation(fields: [id_commande], references: [id_commande])
+  fourniture      Fourniture @relation(fields: [id_fourniture], references: [id_fourniture])
+
+  @@id([id_commande, id_fourniture])
+}
+
+model Oeuvre {
+  id_oeuvre                Int           @id @default(autoincrement())
+  titre_oeuvre             String
+  date_realisation         DateTime
+  contexte_realisation     String
+  dimensions               String
+  description              String
+  techniques_et_materiaux  String
+  prix                     Float
+  date_publication         DateTime
+  images_oeuvre            String[]
+  id_categorie             Int
+  id_artisan               Int
+  
+  categorie                Categorie    @relation(fields: [id_categorie], references: [id_categorie])
+  artisan                  Artisan      @relation(fields: [id_artisan], references: [id_artisan])
+  
+  achats                   Achat[]
+  Notes                    Note[]
+  Avis                     Avis[]
+  SignalementOeuvre        SignalementOeuvre[]
+  Sauvegardes              Sauvegarde[]
+  ConsulteOeuvre           ConsulteOeuvre[]
+}
+
+model Categorie {
+  id_categorie     Int       @id @default(autoincrement())
+  nom_categorie    String
+  image_categorie  String
+  description      String?
+
+  oeuvres          Oeuvre[]
+  ConsulteCategorie ConsulteCategorie[]
+}
+
+model Achat {
+  id_achat    Int      @id @default(autoincrement())
+  etat_achat  String
+  date_achat  DateTime
+  id_oeuvre   Int
+  id_client   Int
+  
+  oeuvre      Oeuvre    @relation(fields: [id_oeuvre], references: [id_oeuvre])
+  client      Client   @relation(fields: [id_client], references: [id_client])
+}
+
+model Conversation {
+  id_conversation  Int        @id @default(autoincrement())
+  id_client        Int
+  id_artisan       Int
+  
+  client           Client     @relation(fields: [id_client], references: [id_client])
+  artisan          Artisan    @relation(fields: [id_artisan], references: [id_artisan])
+  
+  messages         Message[]
+}
+
+model Message {
+  id_message       Int           @id @default(autoincrement())
+  date_message     DateTime
+  contenu          String
+  id_destinateur   Int
+  id_conversation  Int
+
+  utilisateur      Utilisateur   @relation(fields: [id_destinateur], references: [id_utilisateur])
+  conversation     Conversation  @relation(fields: [id_conversation], references: [id_conversation])
+}
+
+model Note {
+  id_client    Int
+  id_oeuvre    Int
+  note         Int
+  
+  client       Client    @relation(fields: [id_client], references: [id_client])
+  oeuvre       Oeuvre    @relation(fields: [id_oeuvre], references: [id_oeuvre])
+  @@id([id_client, id_oeuvre])
+}
+
+model Avis {
+  id_avis     Int         @id @default(autoincrement())
+  id_client   Int
+  id_oeuvre   Int
+  contenu     String
+  date_avis   DateTime    @default(now())
+  
+  client      Client      @relation(fields: [id_client], references: [id_client])
+  Oeuvre      Oeuvre      @relation(fields: [id_oeuvre], references: [id_oeuvre])
+  
+  reponse     Reponse[]
+  SignalementAvis SignalementAvis[]
+}
+
+model Reponse {
+  id_artisan  Int
+  id_avis     Int
+  contenu     String
+  date_reponse DateTime   @default(now())
+  
+  Artisan     Artisan     @relation(fields: [id_artisan], references: [id_artisan])
+  Avis        Avis        @relation(fields: [id_avis], references: [id_avis])
+  
+  @@id([id_artisan, id_avis])
+}
+
+model SignalementProfil {
+  id_signalement    Int    @id @default(autoincrement())
+  raison            String
+  date              DateTime      @default(now())
+  id_signale        Int
+  id_rapporteur     Int
+  id_admin          Int?
+
+  UtilisateurSignale       Utilisateur      @relation("reported_profiles" ,fields: [id_signale], references: [id_utilisateur])
+  UtilisateurRapporteur    Utilisateur      @relation("reports" ,fields: [id_rapporteur], references: [id_utilisateur])
+  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin])
+}
+
+model SignalementOeuvre {
+  id_signalement    Int    @id @default(autoincrement())
+  raison            String
+  date              DateTime      @default(now())
+  id_oeuvre         Int
+  id_client         Int
+  id_admin          Int?
+  
+  Oeuvre            Oeuvre   @relation(fields: [id_oeuvre], references: [id_oeuvre])
+  Client            Client      @relation(fields: [id_client], references: [id_client])
+  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin])
+}
+
+model SignalementAvis {
+  id_signalement    Int    @id @default(autoincrement())
+  raison            String
+  date              DateTime
+  id_avis           Int
+  id_client         Int
+  id_admin          Int?
+  
+  Avis              Avis    @relation(fields: [id_avis], references: [id_avis])
+  Client            Client      @relation(fields: [id_client], references: [id_client])
+  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin])
+}
+
+model ConsulteCategorie {
+  id_client      Int
+  id_categorie   Int
+  
+  Client         Client @relation(fields: [id_client], references: [id_client])
+  Categorie      Categorie @relation(fields: [id_categorie], references: [id_categorie])
+
+  @@id([id_client,id_categorie])
+}
+
+model ConsulteOeuvre {
+  id_client     Int
+  id_oeuvre     Int
+  
+  Client        Client @relation(fields: [id_client], references: [id_client])
+  Oeuvre        Oeuvre @relation(fields: [id_oeuvre], references: [id_oeuvre])
+  
+  @@id([id_client,id_oeuvre])
+}
+
+model Sauvegarde {
+  id_client      Int
+  id_oeuvre      Int
+  
+  Client        Client @relation(fields: [id_client], references: [id_client])
+  Oeuvre        Oeuvre @relation(fields: [id_oeuvre], references: [id_oeuvre])
+  @@id([id_client,id_oeuvre])
+}
