@@ -3,6 +3,7 @@ import { hashPassword } from '../auth/common/hashPassword';
 import { CreateClientDto } from '../auth/dtos/create-client.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { signToken } from '../utils/signtoken.jwt';
+import { utilisateurSelect } from '../types/utilisateur-select';
 
 @Injectable()
 export class ClientService {
@@ -51,5 +52,18 @@ export class ClientService {
       user: rest,
       token,
     };
+  }
+
+  async getAll() {
+    return await this.prismaService.client.findMany({
+      select: {
+        Utilisateur: {
+          select: {
+            ...utilisateurSelect,
+          },
+        },
+        preference_art: true,
+      },
+    });
   }
 }

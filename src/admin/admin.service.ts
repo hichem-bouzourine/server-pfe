@@ -3,6 +3,7 @@ import { CreateAdminDto } from '../auth/dtos/create-admin.dto';
 import { hashPassword } from '../auth/common/hashPassword';
 import { PrismaService } from '../prisma/prisma.service';
 import { signToken } from '../utils/signtoken.jwt';
+import { utilisateurSelect } from '../types/utilisateur-select';
 
 @Injectable()
 export class AdminService {
@@ -43,5 +44,17 @@ export class AdminService {
       user: rest,
       token,
     };
+  }
+
+  async getAll() {
+    return await this.prismaService.administrateur.findMany({
+      select: {
+        Utilisateur: {
+          select: {
+            ...utilisateurSelect,
+          },
+        },
+      },
+    });
   }
 }

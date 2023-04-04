@@ -3,6 +3,7 @@ import { hashPassword } from '../auth/common/hashPassword';
 import { CreateFournisseurDto } from '../auth/dtos/create-fournisseur.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { signToken } from '../utils/signtoken.jwt';
+import { utilisateurSelect } from '../types/utilisateur-select';
 
 @Injectable()
 export class FournisseurService {
@@ -56,6 +57,16 @@ export class FournisseurService {
   }
 
   async getAll() {
-    return await this.prismaService.fournisseur.findMany();
+    return await this.prismaService.fournisseur.findMany({
+      select: {
+        Utilisateur: {
+          select: {
+            ...utilisateurSelect,
+          },
+        },
+        specialite: true,
+        statutCompte: true,
+      },
+    });
   }
 }

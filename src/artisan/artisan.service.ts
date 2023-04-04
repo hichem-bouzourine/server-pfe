@@ -3,6 +3,7 @@ import { CreateArtisanDto } from '../auth/dtos/create-artisan.dto';
 import { hashPassword } from '../auth/common/hashPassword';
 import { PrismaService } from '../prisma/prisma.service';
 import { signToken } from '../utils/signtoken.jwt';
+import { utilisateurSelect } from '../types/utilisateur-select';
 
 @Injectable()
 export class ArtisanService {
@@ -57,5 +58,21 @@ export class ArtisanService {
       user: rest,
       token,
     };
+  }
+
+  async getAll() {
+    return await this.prismaService.artisan.findMany({
+      select: {
+        Utilisateur: {
+          select: {
+            ...utilisateurSelect,
+          },
+        },
+        description: true,
+        annee_experience: true,
+        specialite: true,
+        statutCompte: true,
+      },
+    });
   }
 }
