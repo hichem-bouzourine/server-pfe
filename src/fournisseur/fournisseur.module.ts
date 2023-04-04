@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { FournisseurService } from './fournisseur.service';
+import { FournisseurController } from './fournisseur.controller';
 
 @Module({
-  providers: [FournisseurService]
+  imports: [],
+  providers: [FournisseurService],
+  controllers: [FournisseurController],
 })
 export class FournisseurModule {}
