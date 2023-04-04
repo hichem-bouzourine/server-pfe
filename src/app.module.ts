@@ -6,12 +6,15 @@ import { FournisseurModule } from './fournisseur/fournisseur.module';
 import { ArtisanModule } from './artisan/artisan.module';
 import { ClientModule } from './client/client.module';
 import { AdminModule } from './admin/admin.module';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './auth/strategies/jwt.strategy';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    JwtModule.register({}),
     AuthModule,
     PrismaModule,
     FournisseurModule,
@@ -20,6 +23,6 @@ import { AdminModule } from './admin/admin.module';
     AdminModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [JwtStrategy],
 })
 export class AppModule {}
