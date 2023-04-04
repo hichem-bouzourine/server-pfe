@@ -1,6 +1,9 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { AdminService } from './admin.service';
+import { AuthGuard } from '@nestjs/passport';
+import { AdminGuard } from './guards/admin.guard';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('admin')
 export class AdminController {
   constructor(private adminService: AdminService) {}
@@ -16,6 +19,7 @@ export class AdminController {
   }
 
   @Get('/full')
+  @UseGuards(AdminGuard)
   getFullList() {
     return this.adminService.getFullList();
   }
