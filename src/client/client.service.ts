@@ -2,10 +2,12 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { hashPassword } from '../auth/common/hashPassword';
 import { CreateClientDto } from '../auth/dtos/create-client.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { signToken } from '../utils/signtoken.jwt';
 
 @Injectable()
 export class ClientService {
   constructor(private prismaService: PrismaService) {}
+
   async createClient(body: CreateClientDto) {
     const {
       preference_art,
@@ -41,6 +43,13 @@ export class ClientService {
       },
     });
 
-    return user;
+    const { password: storedPassword, ...rest } = user;
+
+    const token = await signToken(user.id_utilisateur, user.email, user.type);
+
+    return {
+      user: rest,
+      token,
+    };
   }
 }

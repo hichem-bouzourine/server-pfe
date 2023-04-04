@@ -2,10 +2,12 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateAdminDto } from '../auth/dtos/create-admin.dto';
 import { hashPassword } from '../auth/common/hashPassword';
 import { PrismaService } from '../prisma/prisma.service';
+import { signToken } from '../utils/signtoken.jwt';
 
 @Injectable()
 export class AdminService {
   constructor(private prismaService: PrismaService) {}
+
   async createAdmin(body: CreateAdminDto) {
     const { date_de_naissance, date_inscription, password, ...userData } = body;
 
@@ -33,6 +35,13 @@ export class AdminService {
       },
     });
 
-    return user;
+    const { password: storedPassword, ...rest } = user;
+
+    const token = await signToken(user.id_utilisateur, user.email, user.type);
+
+    return {
+      user: rest,
+      token,
+    };
   }
 }
