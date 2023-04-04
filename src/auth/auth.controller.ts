@@ -56,4 +56,9 @@ export class AuthController {
 
     throw new BadRequestException(`User is not of type ${Type_User.CLIENT}`);
   }
+
+  @Post('login')
+  login(@Body() body: LoginDto) {
+    return this.authService.login(body.email, body.password);
+  }
 }
