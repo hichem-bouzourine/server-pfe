@@ -84,4 +84,19 @@ export class AdminService {
 
     return user;
   }
+
+  async getFullList() {
+    const users = await this.prismaService.utilisateur.findMany({
+      select: {
+        ...utilisateurSelect,
+        Administrateur: true,
+        Artisan: true,
+        Fournisseur: true,
+        Client: true,
+      },
+    });
+
+    if (!users.length) throw new NotFoundException('No users in the database');
+    return users;
+  }
 }

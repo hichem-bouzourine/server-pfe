@@ -10,8 +10,13 @@ export class AdminController {
     return this.adminService.getAll();
   }
 
-  @Get(':id')
+  @Get('/admins/:id')
   getOne(@Param('id') id: number) {
     return this.adminService.getOne(id);
+  }
+
+  @Get('/full')
+  getFullList() {
+    return this.adminService.getFullList();
   }
 }
