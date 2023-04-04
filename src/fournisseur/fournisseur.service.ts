@@ -54,4 +54,8 @@ export class FournisseurService {
       token,
     };
   }
+
+  async getAll() {
+    return await this.prismaService.fournisseur.findMany();
+  }
 }
