@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateArtisanDto } from '../auth/dtos/create-artisan.dto';
 import { hashPassword } from '../auth/common/hashPassword';
 import { PrismaService } from '../prisma/prisma.service';
@@ -61,7 +65,7 @@ export class ArtisanService {
   }
 
   async getAll() {
-    return await this.prismaService.artisan.findMany({
+    const users = await this.prismaService.artisan.findMany({
       select: {
         Utilisateur: {
           select: {
@@ -74,5 +78,32 @@ export class ArtisanService {
         statutCompte: true,
       },
     });
+
+    if (!users.length) throw new NotFoundException('Artisans not found');
+
+    return users;
+  }
+
+  async getOne(id: number) {
+    const user = await this.prismaService.artisan.findUnique({
+      where: {
+        id_artisan: id,
+      },
+      select: {
+        Utilisateur: {
+          select: {
+            ...utilisateurSelect,
+          },
+        },
+        description: true,
+        annee_experience: true,
+        specialite: true,
+        statutCompte: true,
+      },
+    });
+
+    if (!user) throw new NotFoundException(`Artisan with id '${id}' not found`);
+
+    return user;
   }
 }

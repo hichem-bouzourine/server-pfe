@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { hashPassword } from '../auth/common/hashPassword';
 import { CreateFournisseurDto } from '../auth/dtos/create-fournisseur.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -57,7 +61,7 @@ export class FournisseurService {
   }
 
   async getAll() {
-    return await this.prismaService.fournisseur.findMany({
+    const users = await this.prismaService.fournisseur.findMany({
       select: {
         Utilisateur: {
           select: {
@@ -68,5 +72,30 @@ export class FournisseurService {
         statutCompte: true,
       },
     });
+
+    if (!users.length) throw new NotFoundException('Fournisseurs not found');
+
+    return users;
+  }
+
+  async getOne(id: number) {
+    const user = await this.prismaService.fournisseur.findUnique({
+      where: {
+        id_fournisseur: id,
+      },
+      select: {
+        Utilisateur: {
+          select: {
+            ...utilisateurSelect,
+          },
+        },
+        specialite: true,
+        statutCompte: true,
+      },
+    });
+
+    if (!user) throw new NotFoundException('Fournisseur not found');
+
+    return user;
   }
 }

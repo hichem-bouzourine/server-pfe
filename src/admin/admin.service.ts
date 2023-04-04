@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateAdminDto } from '../auth/dtos/create-admin.dto';
 import { hashPassword } from '../auth/common/hashPassword';
 import { PrismaService } from '../prisma/prisma.service';
@@ -47,7 +51,7 @@ export class AdminService {
   }
 
   async getAll() {
-    return await this.prismaService.administrateur.findMany({
+    const users = await this.prismaService.administrateur.findMany({
       select: {
         Utilisateur: {
           select: {
@@ -56,5 +60,28 @@ export class AdminService {
         },
       },
     });
+
+    if (!users.length) throw new NotFoundException('Admins not found');
+
+    return users;
+  }
+
+  async getOne(id: number) {
+    const user = await this.prismaService.administrateur.findUnique({
+      where: {
+        id_admin: id,
+      },
+      select: {
+        Utilisateur: {
+          select: {
+            ...utilisateurSelect,
+          },
+        },
+      },
+    });
+
+    if (!user) throw new NotFoundException(`Admin with id '${id}' not found`);
+
+    return user;
   }
 }
