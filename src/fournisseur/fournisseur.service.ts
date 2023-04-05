@@ -50,6 +50,13 @@ export class FournisseurService {
           },
         },
       },
+      select: {
+        ...utilisateurSelect,
+        Administrateur: true,
+        Artisan: true,
+        Fournisseur: true,
+        Client: true,
+      },
     });
 
     const { password: storedPassword, ...rest } = user;

@@ -8,6 +8,8 @@ import { hashPassword } from '../auth/common/hashPassword';
 import { PrismaService } from '../prisma/prisma.service';
 import { signToken } from '../utils/signtoken.jwt';
 import { utilisateurSelect } from '../types/utilisateur-select';
+import { UpdateUserDto } from 'src/auth/dtos/update-user-.dto';
+import { Type_User } from '@prisma/client';
 
 @Injectable()
 export class AdminService {
@@ -45,6 +47,13 @@ export class AdminService {
           create: {},
         },
       },
+      select: {
+        ...utilisateurSelect,
+        Administrateur: true,
+        Artisan: true,
+        Fournisseur: true,
+        Client: true,
+      },
     });
 
     const { password: storedPassword, ...rest } = user;
@@ -61,6 +70,10 @@ export class AdminService {
     };
   }
 
+  /**
+   * Get All administrators
+   * @returns Administrateur[]
+   */
   async getAll() {
     const users = await this.prismaService.administrateur.findMany({
       select: {
@@ -120,6 +133,11 @@ export class AdminService {
     return users;
   }
 
+  /**
+   * Get user by its email
+   * @param email
+   * @returns Utilisateur
+   */
   async getOneUser(email: string) {
     const user = await this.prismaService.utilisateur.findUnique({
       where: {
@@ -136,5 +154,106 @@ export class AdminService {
 
     if (!user) throw new NotFoundException('User not found.');
     return user;
+  }
+
+  /**
+   * Updates properties of user
+   * @param userId
+   * @param body
+   * @returns Utilisateur
+   *
+   * @example updateUser(11, {nom: "hichem"}) => Utilisateur
+   */
+  async updateUser(userId: number, body: UpdateUserDto) {
+    // Search for user with his ID
+    const user = await this.prismaService.utilisateur.findUnique({
+      where: { id_utilisateur: userId },
+      select: {
+        ...utilisateurSelect,
+        Administrateur: true,
+        Artisan: true,
+        Fournisseur: true,
+        Client: true,
+      },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    const {
+      annee_experience,
+      description,
+      specialite,
+      statutCompte,
+      preference_art,
+      email,
+      ...rest
+    } = body;
+
+    switch (user.type) {
+      case Type_User.ADMIN:
+        await this.prismaService.administrateur.update({
+          where: {
+            id_admin: userId,
+          },
+          data: {},
+        });
+        break;
+
+      case Type_User.ARTISAN:
+        await this.prismaService.artisan.update({
+          where: {
+            id_artisan: userId,
+          },
+          data: {
+            annee_experience,
+            description,
+            specialite,
+            statutCompte,
+          },
+        });
+        break;
+
+      case Type_User.FOURNISSEUR:
+        await this.prismaService.fournisseur.update({
+          where: {
+            id_fournisseur: userId,
+          },
+          data: {
+            specialite,
+            statutCompte,
+          },
+        });
+        break;
+
+      case Type_User.CLIENT:
+        await this.prismaService.client.update({
+          where: {
+            id_client: userId,
+          },
+          data: {
+            preference_art,
+          },
+        });
+        break;
+
+      default:
+        break;
+    }
+    return await this.prismaService.utilisateur.update({
+      where: {
+        id_utilisateur: userId,
+      },
+      data: {
+        email: email?.toLowerCase().trim(),
+        ...rest,
+      },
+      select: {
+        ...utilisateurSelect,
+        Administrateur: true,
+        Artisan: true,
+        Fournisseur: true,
+        Client: true,
+      },
+    });
   }
 }
