@@ -1,4 +1,5 @@
 import {
+  BadGatewayException,
   BadRequestException,
   Injectable,
   NotFoundException,
@@ -255,5 +256,77 @@ export class AdminService {
         Client: true,
       },
     });
+  }
+
+  /**
+   * Deletes a user and all their associated data from the database.
+   * @async
+   * @function deleteUser
+   * @param {number} userId - The ID of the user to delete.
+   * @throws {NotFoundException} If the user cannot be found in the database.
+   * @throws {BadGatewayException} If deleting the user and their data from the database fails.
+   * @returns {Promise<void>} A Promise that resolves when the user and their data have been successfully deleted.
+   */
+  async deleteUser(userId: number) {
+    // Search for user with his ID
+    const user = await this.prismaService.utilisateur.findUnique({
+      where: { id_utilisateur: userId },
+      select: {
+        ...utilisateurSelect,
+        Administrateur: true,
+        Artisan: true,
+        Fournisseur: true,
+        Client: true,
+      },
+    });
+
+    if (!user) throw new NotFoundException('User not found');
+
+    switch (user.type) {
+      case Type_User.ADMIN:
+        await this.prismaService.administrateur.delete({
+          where: {
+            id_admin: user.Administrateur.id_admin,
+          },
+        });
+        break;
+
+      case Type_User.ARTISAN:
+        await this.prismaService.artisan.delete({
+          where: {
+            id_artisan: user.Artisan.id_artisan,
+          },
+        });
+        break;
+
+      case Type_User.FOURNISSEUR:
+        await this.prismaService.fournisseur.delete({
+          where: {
+            id_fournisseur: user.Fournisseur.id_fournisseur,
+          },
+        });
+        break;
+
+      case Type_User.CLIENT:
+        await this.prismaService.client.delete({
+          where: {
+            id_client: user.Client.id_client,
+          },
+        });
+        break;
+
+      default:
+        break;
+    }
+
+    const deletedUser = this.prismaService.utilisateur.delete({
+      where: {
+        id_utilisateur: userId,
+      },
+    });
+
+    if (!deletedUser) {
+      throw new BadGatewayException('Failed to delete user');
+    }
   }
 }
