@@ -20,13 +20,14 @@ export class FournisseurService {
       date_de_naissance,
       date_inscription,
       password,
+      email,
       ...userData
     } = body;
 
     // Check if user exists already exists
     const userByEmail = await this.prismaService.utilisateur.findFirst({
       where: {
-        email: userData.email,
+        email: email.toLowerCase().trim(),
       },
     });
 
@@ -38,6 +39,7 @@ export class FournisseurService {
     const user = await this.prismaService.utilisateur.create({
       data: {
         ...userData,
+        email: email.toLowerCase().trim(),
         password: hashedPassword,
         date_de_naissance: new Date(date_de_naissance),
         date_inscription: new Date(date_inscription),
@@ -52,7 +54,11 @@ export class FournisseurService {
 
     const { password: storedPassword, ...rest } = user;
 
-    const token = await signToken(user.id_utilisateur, user.email, user.type);
+    const token = await signToken(
+      user.id_utilisateur,
+      user.email.toLowerCase().trim(),
+      user.type,
+    );
 
     return {
       user: rest,

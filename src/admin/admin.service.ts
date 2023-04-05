@@ -14,12 +14,18 @@ export class AdminService {
   constructor(private prismaService: PrismaService) {}
 
   async createAdmin(body: CreateAdminDto) {
-    const { date_de_naissance, date_inscription, password, ...userData } = body;
+    const {
+      date_de_naissance,
+      date_inscription,
+      password,
+      email,
+      ...userData
+    } = body;
 
     // Check if user exists already exists
     const userByEmail = await this.prismaService.utilisateur.findFirst({
       where: {
-        email: userData.email,
+        email: email.toLowerCase().trim(),
       },
     });
 
@@ -31,6 +37,7 @@ export class AdminService {
     const user = await this.prismaService.utilisateur.create({
       data: {
         ...userData,
+        email: email.toLowerCase().trim(),
         password: hashedPassword,
         date_de_naissance: new Date(date_de_naissance),
         date_inscription: new Date(date_inscription),
@@ -42,7 +49,11 @@ export class AdminService {
 
     const { password: storedPassword, ...rest } = user;
 
-    const token = await signToken(user.id_utilisateur, user.email, user.type);
+    const token = await signToken(
+      user.id_utilisateur,
+      user.email.toLowerCase().trim(),
+      user.type,
+    );
 
     return {
       user: rest,
@@ -66,6 +77,11 @@ export class AdminService {
     return users;
   }
 
+  /**
+   * Get one specific Admin
+   * @param id
+   * @returns Admin.
+   */
   async getOne(id: number) {
     const user = await this.prismaService.administrateur.findUnique({
       where: {
@@ -85,6 +101,10 @@ export class AdminService {
     return user;
   }
 
+  /**
+   * Get all the users of the application.
+   * @returns Utilisateur[]
+   */
   async getFullList() {
     const users = await this.prismaService.utilisateur.findMany({
       select: {
@@ -98,5 +118,23 @@ export class AdminService {
 
     if (!users.length) throw new NotFoundException('No users in the database');
     return users;
+  }
+
+  async getOneUser(email: string) {
+    const user = await this.prismaService.utilisateur.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        ...utilisateurSelect,
+        Administrateur: true,
+        Artisan: true,
+        Fournisseur: true,
+        Client: true,
+      },
+    });
+
+    if (!user) throw new NotFoundException('User not found.');
+    return user;
   }
 }
