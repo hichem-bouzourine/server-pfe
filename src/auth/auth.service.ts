@@ -14,6 +14,18 @@ const scrypt = promisify(_scrypt);
 export class AuthService {
   constructor(private prismaService: PrismaService) {}
 
+  /**
+   * Logs in a user with the provided email and password.
+   *
+   * @throws {NotFoundException} If no user is found with the provided email.
+   * @throws {BadRequestException} If the password is incorrect.
+   *
+   * @param {string} email - The email of the user.
+   * @param {string} password - The password of the user.
+   *
+   * @returns {Promise<{ user: Utilisateur, token: string }>} An object containing the authenticated user and the access token.
+   */
+
   async login(email: string, password: string) {
     // find user by email
     const userByEmail = await this.prismaService.utilisateur.findFirst({
