@@ -8,6 +8,7 @@ import { ClientModule } from './client/client.module';
 import { AdminModule } from './admin/admin.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/strategies/jwt.strategy';
+import { CategorieModule } from './categorie/categorie.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { JwtStrategy } from './auth/strategies/jwt.strategy';
     ArtisanModule,
     ClientModule,
     AdminModule,
+    CategorieModule,
   ],
   controllers: [],
   providers: [JwtStrategy],
