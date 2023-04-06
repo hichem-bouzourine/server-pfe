@@ -9,6 +9,7 @@ import { AdminModule } from './admin/admin.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { CategorieModule } from './categorie/categorie.module';
+import { OeuvreModule } from './oeuvre/oeuvre.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { CategorieModule } from './categorie/categorie.module';
     ArtisanModule,
     ClientModule,
     AdminModule,
+    OeuvreModule,
     CategorieModule,
   ],
   controllers: [],
