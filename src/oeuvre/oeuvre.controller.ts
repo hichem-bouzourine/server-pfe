@@ -15,7 +15,6 @@ import { UpdateOeuvreDto } from './dtos/update-oeuvre.dto';
 import { CurrentUser } from 'src/auth/decorators/get-current-user.decorator';
 import { AuthGuard } from '@nestjs/passport';
 
-@UseGuards(AuthGuard('jwt'))
 @Controller('oeuvre')
 export class OeuvreController {
   constructor(private readonly oeuvreService: OeuvreService) {}
@@ -35,6 +34,7 @@ export class OeuvreController {
     return this.oeuvreService.findByTitreOeuvre(titre_oeuvre);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   create(
     @CurrentUser('id_utilisateur') userId: number,
@@ -44,6 +44,7 @@ export class OeuvreController {
     return this.oeuvreService.create(userId, type, createOeuvreDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('/:id')
   update(
     @CurrentUser('id_utilisateur') userId: number,
@@ -53,6 +54,7 @@ export class OeuvreController {
     return this.oeuvreService.update(userId, id, updateOeuvreDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   remove(
     @CurrentUser('id_utilisateur') userId: number,

@@ -16,7 +16,6 @@ import { CategorieService } from './categorie.service';
 import { AdminGuard } from '../admin/guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
 
-@UseGuards(AuthGuard('jwt'))
 @Controller('categorie')
 export class CategorieController {
   constructor(private readonly categorieService: CategorieService) {}
@@ -36,12 +35,14 @@ export class CategorieController {
     return this.categorieService.findByNomCategorie(nom_categorie);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   create(@Body() createCategorieDto: CreateCategorieDto): Promise<Categorie> {
     return this.categorieService.create(createCategorieDto);
   }
 
   @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -51,6 +52,7 @@ export class CategorieController {
   }
 
   @UseGuards(AdminGuard)
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number): Promise<Categorie> {
     return this.categorieService.remove(id);
