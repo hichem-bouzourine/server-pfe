@@ -73,9 +73,9 @@ model Client {
   
   Utilisateur        Utilisateur @relation(fields: [id_client], references: [id_utilisateur])
   
-  Achats              Achat[]
+  Achats             Achat[]
   Conversation       Conversation[]
-  Notes               Note[] 
+  Notes              Note[] 
   Avis               Avis[] 
   SignalementOeuvre  SignalementOeuvre[] 
   SignalementAvis    SignalementAvis[] 
@@ -249,6 +249,7 @@ model SignalementProfil {
   id_signale        Int
   id_rapporteur     Int
   id_admin          Int?
+  etatSignalement   Boolean
 
   UtilisateurSignale       Utilisateur      @relation("reported_profiles" ,fields: [id_signale], references: [id_utilisateur])
   UtilisateurRapporteur    Utilisateur      @relation("reports" ,fields: [id_rapporteur], references: [id_utilisateur])
@@ -262,6 +263,7 @@ model SignalementOeuvre {
   id_oeuvre         Int
   id_client         Int
   id_admin          Int?
+  etatSignalement   Boolean
   
   Oeuvre            Oeuvre   @relation(fields: [id_oeuvre], references: [id_oeuvre])
   Client            Client      @relation(fields: [id_client], references: [id_client])
@@ -271,10 +273,11 @@ model SignalementOeuvre {
 model SignalementAvis {
   id_signalement    Int    @id @default(autoincrement())
   raison            String
-  date              DateTime
+  date              DateTime      @default(now())
   id_avis           Int
   id_client         Int
   id_admin          Int?
+  etatSignalement   Boolean
   
   Avis              Avis    @relation(fields: [id_avis], references: [id_avis])
   Client            Client      @relation(fields: [id_client], references: [id_client])

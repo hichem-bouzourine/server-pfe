@@ -10,6 +10,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { CategorieModule } from './categorie/categorie.module';
 import { OeuvreModule } from './oeuvre/oeuvre.module';
+import { SignalementProfileModule } from './signalement-profile/signalement-profile.module';
+import { SignalementOeuvreModule } from './signalement-oeuvre/signalement-oeuvre.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { OeuvreModule } from './oeuvre/oeuvre.module';
     AdminModule,
     OeuvreModule,
     CategorieModule,
+    SignalementProfileModule,
+    SignalementOeuvreModule,
   ],
   controllers: [],
   providers: [JwtStrategy],
