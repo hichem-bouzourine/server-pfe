@@ -15,6 +15,7 @@ import { SignalementOeuvreModule } from './signalement-oeuvre/signalement-oeuvre
 import { SignalementAvisModule } from './signalement-avis/signalement-avis.module';
 import { AvisModule } from './avis/avis.module';
 import { ReponseModule } from './reponse/reponse.module';
+import { NoteModule } from './note/note.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ReponseModule } from './reponse/reponse.module';
     SignalementAvisModule,
     AvisModule,
     ReponseModule,
+    NoteModule,
   ],
   controllers: [],
   providers: [JwtStrategy],
