@@ -12,6 +12,7 @@ import { CategorieModule } from './categorie/categorie.module';
 import { OeuvreModule } from './oeuvre/oeuvre.module';
 import { SignalementProfileModule } from './signalement-profile/signalement-profile.module';
 import { SignalementOeuvreModule } from './signalement-oeuvre/signalement-oeuvre.module';
+import { SignalementAvisModule } from './signalement-avis/signalement-avis.module';
 import { AvisModule } from './avis/avis.module';
 import { ReponseModule } from './reponse/reponse.module';
 
@@ -31,6 +32,7 @@ import { ReponseModule } from './reponse/reponse.module';
     CategorieModule,
     SignalementProfileModule,
     SignalementOeuvreModule,
+    SignalementAvisModule,
     AvisModule,
     ReponseModule,
   ],
