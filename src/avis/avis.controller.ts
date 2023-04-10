@@ -9,15 +9,15 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { AvisService } from './avis.service';
-import { CreateAviDto } from './dto/create-avi.dto';
+import { CreateAvisDto } from './dto/create-avis.dto';
 
 @Controller('avis')
 export class AvisController {
   constructor(private readonly avisService: AvisService) {}
 
   @Post()
-  create(@Body() createAviDto: CreateAviDto) {
-    return this.avisService.create(createAviDto);
+  create(@Body() createAvisDto: CreateAvisDto) {
+    return this.avisService.create(createAvisDto);
   }
 
   @Get()

@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CreateAviDto {
+export class CreateAvisDto {
   @IsNotEmpty()
   @IsNumber()
   id_client: number;

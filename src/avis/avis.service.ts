@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateAviDto } from './dto/create-avi.dto';
+import { CreateAvisDto } from './dto/create-avis.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { ClientService } from '../client/client.service';
 import { OeuvreService } from '../oeuvre/oeuvre.service';
@@ -12,14 +12,14 @@ export class AvisService {
     private oeuvreService: OeuvreService,
   ) {}
 
-  async create(createAviDto: CreateAviDto) {
-    await this.clientService.getOne(createAviDto.id_client);
+  async create(createAvisDto: CreateAvisDto) {
+    await this.clientService.getOne(createAvisDto.id_client);
 
-    await this.oeuvreService.findOne(createAviDto.id_oeuvre);
+    await this.oeuvreService.findOne(createAvisDto.id_oeuvre);
 
     const avis = await this.prismaService.avis.create({
       data: {
-        ...createAviDto,
+        ...createAvisDto,
       },
     });
 
