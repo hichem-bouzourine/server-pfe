@@ -13,7 +13,7 @@ import { CreateCategorieDto } from './dto/create-categorie.dto';
 import { UpdateCategorieDto } from './dto/update-categorie.dto';
 import { Categorie } from '.prisma/client';
 import { CategorieService } from './categorie.service';
-import { AdminGuard } from '../admin/guards/admin.guard';
+import { AdminGuard } from '../guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('categorie')

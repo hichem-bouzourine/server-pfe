@@ -11,7 +11,7 @@ import { SignalementAvisService } from './signalement-avis.service';
 import { CreateSignalementAvisDto } from './dto/create-signalement-avis.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from '../auth/decorators/get-current-user.decorator';
-import { AdminGuard } from '../admin/guards/admin.guard';
+import { AdminGuard } from '../guards/admin.guard';
 
 @Controller('signalement-avis')
 export class SignalementAvisController {
