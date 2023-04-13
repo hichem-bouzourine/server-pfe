@@ -17,6 +17,7 @@ import { AvisModule } from './avis/avis.module';
 import { ReponseModule } from './reponse/reponse.module';
 import { NoteModule } from './note/note.module';
 import { ConsulteOeuvreModule } from './consulte-oeuvre/consulte-oeuvre.module';
+import { ConsulteCategorieModule } from './consulte-categorie/consulte-categorie.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { ConsulteOeuvreModule } from './consulte-oeuvre/consulte-oeuvre.module';
     ReponseModule,
     NoteModule,
     ConsulteOeuvreModule,
+    ConsulteCategorieModule,
   ],
   controllers: [],
   providers: [JwtStrategy],
