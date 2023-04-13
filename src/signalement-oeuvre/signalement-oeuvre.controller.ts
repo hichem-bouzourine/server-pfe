@@ -11,7 +11,7 @@ import { SignalementOeuvreService } from './signalement-oeuvre.service';
 import { CreateSignalementOeuvreDto } from './dto/create-signalement-oeuvre.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/auth/decorators/get-current-user.decorator';
-import { AdminGuard } from 'src/admin/guards/admin.guard';
+import { AdminGuard } from 'src/guards/admin.guard';
 
 @Controller('signalement-oeuvre')
 export class SignalementOeuvreController {
