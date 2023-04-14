@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { NoteService } from './note.service';
 import { CreateNoteDto } from './dto/create-note.dto';
@@ -27,12 +28,12 @@ export class NoteController {
     return this.noteService.create(createNoteDto, id);
   }
 
-  @Get(':id_oeuvre')
+  @Get()
   findOne(
-    @Param('id_oeuvre') id_oeuvre: number,
-    @CurrentUser('id_utilisateur') id: number,
+    @Query('id_oeuvre') id_oeuvre: number,
+    @Query('id_client') id_client: number,
   ) {
-    return this.noteService.findOne(id_oeuvre, id);
+    return this.noteService.findOne(id_oeuvre, id_client);
   }
 
   @Patch(':id_oeuvre')
