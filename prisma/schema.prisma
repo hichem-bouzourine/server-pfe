@@ -45,7 +45,7 @@ model Utilisateur {
 model Administrateur {
   id_admin        Int      @id
   
-  Utilisateur     Utilisateur     @relation(fields: [id_admin], references: [id_utilisateur])
+  Utilisateur     Utilisateur     @relation(fields: [id_admin], references: [id_utilisateur], onDelete: Cascade)
 
   SignalementProfil SignalementProfil[]
   SignalementOeuvre SignalementOeuvre[]
@@ -59,7 +59,7 @@ model Artisan {
   specialite       String
   statutCompte     Boolean
   
-  Utilisateur      Utilisateur     @relation(fields: [id_artisan], references: [id_utilisateur])
+  Utilisateur      Utilisateur     @relation(fields: [id_artisan], references: [id_utilisateur], onDelete: Cascade)
   
   Oeuvres          Oeuvre[]
   Commandes        Commande[]       
@@ -71,7 +71,7 @@ model Client {
   id_client     Int      @id
   preference_art     String?
   
-  Utilisateur        Utilisateur @relation(fields: [id_client], references: [id_utilisateur])
+  Utilisateur        Utilisateur @relation(fields: [id_client], references: [id_utilisateur], onDelete: Cascade)
   
   Achats             Achat[]
   Conversation       Conversation[]
@@ -90,7 +90,7 @@ model Fournisseur {
   specialite       String
   statutCompte     Boolean
   
-  Utilisateur      Utilisateur    @relation(fields: [id_fournisseur], references: [id_utilisateur])
+  Utilisateur      Utilisateur    @relation(fields: [id_fournisseur], references: [id_utilisateur], onDelete: Cascade)
   
   Fourniture       Fourniture[]
   CommandesPrisesEnCharge    Commande[]
@@ -104,7 +104,7 @@ model Fourniture {
   stock_disponible      Int
   id_fournisseur        Int
   
-  fournisseur           Fournisseur  @relation(fields: [id_fournisseur], references: [id_fournisseur])
+  fournisseur           Fournisseur  @relation(fields: [id_fournisseur], references: [id_fournisseur], onDelete: Cascade)
   
   commandeFournitures   CommandeFourniture[]
   Commandes             Commande[]
@@ -120,9 +120,9 @@ model Commande {
   id_artisan        Int
   id_fournisseur    Int
   
-  fourniture        Fourniture    @relation(fields: [id_fourniture], references: [id_fourniture])
-  artisan           Artisan       @relation(fields: [id_artisan], references: [id_artisan])
-  fournisseur       Fournisseur   @relation(fields: [id_fournisseur], references: [id_fournisseur])
+  fourniture        Fourniture    @relation(fields: [id_fourniture], references: [id_fourniture], onDelete: Cascade)
+  artisan           Artisan       @relation(fields: [id_artisan], references: [id_artisan], onDelete: Cascade)
+  fournisseur       Fournisseur   @relation(fields: [id_fournisseur], references: [id_fournisseur], onDelete: Cascade)
   
   comandeFournitures CommandeFourniture[]
 }
@@ -132,8 +132,8 @@ model CommandeFourniture {
   id_fourniture   Int
   quantite        Int
   
-  commande        Commande  @relation(fields: [id_commande], references: [id_commande])
-  fourniture      Fourniture @relation(fields: [id_fourniture], references: [id_fourniture])
+  commande        Commande  @relation(fields: [id_commande], references: [id_commande], onDelete: Cascade)
+  fourniture      Fourniture @relation(fields: [id_fourniture], references: [id_fourniture], onDelete: Cascade)
 
   @@id([id_commande, id_fourniture])
 }
@@ -152,8 +152,8 @@ model Oeuvre {
   id_categorie             Int
   id_artisan               Int
   
-  categorie                Categorie    @relation(fields: [id_categorie], references: [id_categorie])
-  artisan                  Artisan      @relation(fields: [id_artisan], references: [id_artisan])
+  categorie                Categorie    @relation(fields: [id_categorie], references: [id_categorie], onDelete: Cascade)
+  artisan                  Artisan      @relation(fields: [id_artisan], references: [id_artisan], onDelete: Cascade)
   
   achats                   Achat[]
   Notes                    Note[]
@@ -180,8 +180,8 @@ model Achat {
   id_oeuvre   Int
   id_client   Int
   
-  oeuvre      Oeuvre    @relation(fields: [id_oeuvre], references: [id_oeuvre])
-  client      Client   @relation(fields: [id_client], references: [id_client])
+  oeuvre      Oeuvre    @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
+  client      Client   @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
 }
 
 model Conversation {
@@ -189,8 +189,8 @@ model Conversation {
   id_client        Int
   id_artisan       Int
   
-  client           Client     @relation(fields: [id_client], references: [id_client])
-  artisan          Artisan    @relation(fields: [id_artisan], references: [id_artisan])
+  client           Client     @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
+  artisan          Artisan    @relation(fields: [id_artisan], references: [id_artisan], onDelete: Cascade)
   
   messages         Message[]
 }
@@ -202,8 +202,8 @@ model Message {
   id_destinateur   Int
   id_conversation  Int
 
-  utilisateur      Utilisateur   @relation(fields: [id_destinateur], references: [id_utilisateur])
-  conversation     Conversation  @relation(fields: [id_conversation], references: [id_conversation])
+  utilisateur      Utilisateur   @relation(fields: [id_destinateur], references: [id_utilisateur], onDelete: Cascade)
+  conversation     Conversation  @relation(fields: [id_conversation], references: [id_conversation], onDelete: Cascade)
 }
 
 model Note {
@@ -211,8 +211,8 @@ model Note {
   id_oeuvre    Int
   note         Int
   
-  client       Client    @relation(fields: [id_client], references: [id_client])
-  oeuvre       Oeuvre    @relation(fields: [id_oeuvre], references: [id_oeuvre])
+  client       Client    @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
+  oeuvre       Oeuvre    @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
   @@id([id_client, id_oeuvre])
 }
 
@@ -223,8 +223,8 @@ model Avis {
   contenu     String
   date_avis   DateTime    @default(now())
   
-  client      Client      @relation(fields: [id_client], references: [id_client])
-  Oeuvre      Oeuvre      @relation(fields: [id_oeuvre], references: [id_oeuvre])
+  client      Client      @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
+  Oeuvre      Oeuvre      @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
   
   reponse     Reponse[]
   SignalementAvis SignalementAvis[]
@@ -236,8 +236,8 @@ model Reponse {
   contenu     String
   date_reponse DateTime   @default(now())
   
-  Artisan     Artisan     @relation(fields: [id_artisan], references: [id_artisan])
-  Avis        Avis        @relation(fields: [id_avis], references: [id_avis])
+  Artisan     Artisan     @relation(fields: [id_artisan], references: [id_artisan], onDelete: Cascade)
+  Avis        Avis        @relation(fields: [id_avis], references: [id_avis], onDelete: Cascade)
   
   @@id([id_artisan, id_avis])
 }
@@ -251,9 +251,9 @@ model SignalementProfil {
   id_admin          Int?
   etatSignalement   Boolean
 
-  UtilisateurSignale       Utilisateur      @relation("reported_profiles" ,fields: [id_signale], references: [id_utilisateur])
-  UtilisateurRapporteur    Utilisateur      @relation("reports" ,fields: [id_rapporteur], references: [id_utilisateur])
-  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin])
+  UtilisateurSignale       Utilisateur      @relation("reported_profiles" ,fields: [id_signale], references: [id_utilisateur], onDelete: Cascade)
+  UtilisateurRapporteur    Utilisateur      @relation("reports" ,fields: [id_rapporteur], references: [id_utilisateur], onDelete: Cascade)
+  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 }
 
 model SignalementOeuvre {
@@ -265,9 +265,9 @@ model SignalementOeuvre {
   id_admin          Int?
   etatSignalement   Boolean
   
-  Oeuvre            Oeuvre   @relation(fields: [id_oeuvre], references: [id_oeuvre])
-  Client            Client      @relation(fields: [id_client], references: [id_client])
-  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin])
+  Oeuvre            Oeuvre   @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
+  Client            Client      @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
+  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 }
 
 model SignalementAvis {
@@ -279,17 +279,17 @@ model SignalementAvis {
   id_admin          Int?
   etatSignalement   Boolean
   
-  Avis              Avis    @relation(fields: [id_avis], references: [id_avis])
-  Client            Client      @relation(fields: [id_client], references: [id_client])
-  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin])
+  Avis              Avis    @relation(fields: [id_avis], references: [id_avis], onDelete: Cascade)
+  Client            Client      @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
+  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
 }
 
 model ConsulteCategorie {
   id_client      Int
   id_categorie   Int
   
-  Client         Client @relation(fields: [id_client], references: [id_client])
-  Categorie      Categorie @relation(fields: [id_categorie], references: [id_categorie])
+  Client         Client @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
+  Categorie      Categorie @relation(fields: [id_categorie], references: [id_categorie], onDelete: Cascade)
 
   @@id([id_client,id_categorie])
 }
@@ -298,8 +298,8 @@ model ConsulteOeuvre {
   id_client     Int
   id_oeuvre     Int
   
-  Client        Client @relation(fields: [id_client], references: [id_client])
-  Oeuvre        Oeuvre @relation(fields: [id_oeuvre], references: [id_oeuvre])
+  Client        Client @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
+  Oeuvre        Oeuvre @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
   
   @@id([id_client,id_oeuvre])
 }
@@ -308,7 +308,7 @@ model Sauvegarde {
   id_client      Int
   id_oeuvre      Int
   
-  Client        Client @relation(fields: [id_client], references: [id_client])
-  Oeuvre        Oeuvre @relation(fields: [id_oeuvre], references: [id_oeuvre])
+  Client        Client @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
+  Oeuvre        Oeuvre @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
   @@id([id_client,id_oeuvre])
 }
