@@ -8,6 +8,7 @@ import { hashPassword } from '../auth/common/hashPassword';
 import { PrismaService } from '../prisma/prisma.service';
 import { signToken } from '../utils/signtoken.jwt';
 import { utilisateurSelect } from '../types/utilisateur-select';
+import { Artisan, Utilisateur } from '@prisma/client';
 
 @Injectable()
 export class ArtisanService {
@@ -118,5 +119,35 @@ export class ArtisanService {
     if (!user) throw new NotFoundException(`Artisan with id '${id}' not found`);
 
     return user;
+  }
+
+  async getManyByName(nom: string) {
+    const artisans = await this.prismaService.artisan.findMany({
+      where: {
+        Utilisateur: {
+          nom: {
+            contains: nom,
+            mode: 'insensitive',
+          },
+        },
+      },
+      select: {
+        Utilisateur: {
+          select: {
+            ...utilisateurSelect,
+          },
+        },
+        description: true,
+        annee_experience: true,
+        specialite: true,
+        statutCompte: true,
+      },
+    });
+
+    if (!artisans.length) {
+      throw new NotFoundException(`No Artisan found with nom: ${nom}`);
+    }
+
+    return artisans;
   }
 }

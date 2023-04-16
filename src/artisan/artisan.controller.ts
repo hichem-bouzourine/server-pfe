@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ArtisanService } from './artisan.service';
 
 @Controller('artisan')
@@ -11,7 +11,12 @@ export class ArtisanController {
   }
 
   @Get(':id')
-  getOne(@Param('id') id: number) {
+  getOne(@Param('id', ParseIntPipe) id: number) {
     return this.artisanService.getOne(id);
+  }
+
+  @Get('search/name')
+  getManyByName(@Query('nom') nom: string) {
+    return this.artisanService.getManyByName(nom);
   }
 }
