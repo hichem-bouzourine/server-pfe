@@ -119,12 +119,24 @@ export class NoteService {
     }
 
     // Calculate the average note for the oeuvre
-    const avg = Math.floor(total / count);
+    const avg = total / count;
+    let roundedAvg = Math.round(avg * 100) / 100;
+
+    // Check if the decimal part is less than 0.25
+    if (roundedAvg % 1 < 0.25) {
+      roundedAvg = Math.floor(roundedAvg) + 0.0;
+    }
+    // Check if the decimal part is between 0.25 and 0.75
+    else if (roundedAvg % 1 < 0.75) {
+      roundedAvg = Math.floor(roundedAvg) + 0.5;
+    }
+    // Otherwise, the decimal part is greater than or equal to 0.75
+    else roundedAvg = Math.ceil(roundedAvg);
 
     return {
       id_oeuvre,
       count,
-      avg,
+      avg: roundedAvg,
     };
   }
 
