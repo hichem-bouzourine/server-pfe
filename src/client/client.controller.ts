@@ -16,7 +16,7 @@ export class ClientController {
   }
 
   @Get('search/name')
-  getManyByName(@Query('nom') nom: string) {
-    return this.clientService.getManyByName(nom);
+  getManyByName(@Query('nom') nom: string, @Query('prenom') prenom: string) {
+    return this.clientService.getManyByName(nom, prenom);
   }
 }

@@ -108,14 +108,44 @@ export class ClientService {
     return user;
   }
 
-  async getManyByName(nom: string) {
+  async getManyByName(nom: string, prenom: string) {
     const clients = await this.prismaService.client.findMany({
       where: {
         Utilisateur: {
-          nom: {
-            contains: nom,
-            mode: 'insensitive',
-          },
+          AND: [
+            {
+              OR: [
+                {
+                  nom: {
+                    contains: nom,
+                    mode: 'insensitive',
+                  },
+                },
+                {
+                  prenom: {
+                    contains: prenom,
+                    mode: 'insensitive',
+                  },
+                },
+              ],
+            },
+            {
+              OR: [
+                {
+                  prenom: {
+                    contains: prenom,
+                    mode: 'insensitive',
+                  },
+                },
+                {
+                  nom: {
+                    contains: nom,
+                    mode: 'insensitive',
+                  },
+                },
+              ],
+            },
+          ],
         },
       },
       select: {

@@ -16,7 +16,7 @@ export class ArtisanController {
   }
 
   @Get('search/name')
-  getManyByName(@Query('nom') nom: string) {
-    return this.artisanService.getManyByName(nom);
+  getManyByName(@Query('nom') nom: string, @Query('prenom') prenom: string) {
+    return this.artisanService.getManyByName(nom, prenom);
   }
 }

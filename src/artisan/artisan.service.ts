@@ -121,14 +121,44 @@ export class ArtisanService {
     return user;
   }
 
-  async getManyByName(nom: string) {
+  async getManyByName(nom: string, prenom: string) {
     const artisans = await this.prismaService.artisan.findMany({
       where: {
         Utilisateur: {
-          nom: {
-            contains: nom,
-            mode: 'insensitive',
-          },
+          AND: [
+            {
+              OR: [
+                {
+                  nom: {
+                    contains: nom,
+                    mode: 'insensitive',
+                  },
+                },
+                {
+                  prenom: {
+                    contains: prenom,
+                    mode: 'insensitive',
+                  },
+                },
+              ],
+            },
+            {
+              OR: [
+                {
+                  prenom: {
+                    contains: prenom,
+                    mode: 'insensitive',
+                  },
+                },
+                {
+                  nom: {
+                    contains: nom,
+                    mode: 'insensitive',
+                  },
+                },
+              ],
+            },
+          ],
         },
       },
       select: {
@@ -145,7 +175,9 @@ export class ArtisanService {
     });
 
     if (!artisans.length) {
-      throw new NotFoundException(`No Artisan found with nom: ${nom}`);
+      throw new NotFoundException(
+        `No Artisan found with nom: ${nom} ${prenom}`,
+      );
     }
 
     return artisans;
