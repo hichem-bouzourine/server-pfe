@@ -5,6 +5,7 @@ import {
   Delete,
   Query,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { SauvegardeOeuvreService } from './sauvegarde-oeuvre.service';
 import { CurrentUser } from '../auth/decorators/get-current-user.decorator';
@@ -21,7 +22,7 @@ export class SauvegardeOeuvreController {
 
   @Post()
   create(
-    @Query('id_oeuvre') id_oeuvre: number,
+    @Query('id_oeuvre', ParseIntPipe) id_oeuvre: number,
     @CurrentUser('id_utilisateur') id_client: number,
   ) {
     return this.sauvegardeOeuvreService.create(id_client, id_oeuvre);
@@ -32,9 +33,20 @@ export class SauvegardeOeuvreController {
     return this.sauvegardeOeuvreService.findAllSavedOeuvreForClient(id_client);
   }
 
+  @Get('isSaved')
+  checkIfOeuvreIsSaved(
+    @CurrentUser('id_utilisateur') id_client: number,
+    @Query('id_oeuvre', ParseIntPipe) id_oeuvre: number,
+  ) {
+    return this.sauvegardeOeuvreService.checkIfOeuvreIsSaved(
+      id_client,
+      id_oeuvre,
+    );
+  }
+
   @Delete()
   remove(
-    @Query('id_oeuvre') id_oeuvre: number,
+    @Query('id_oeuvre', ParseIntPipe) id_oeuvre: number,
     @CurrentUser('id_utilisateur') id_client: number,
   ) {
     return this.sauvegardeOeuvreService.remove(id_client, id_oeuvre);

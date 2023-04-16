@@ -52,6 +52,25 @@ export class SauvegardeOeuvreService {
     return savedOeuvres;
   }
 
+  async checkIfOeuvreIsSaved(
+    id_client: number,
+    id_oeuvre: number,
+  ): Promise<boolean> {
+    // Check the existance of the specified Oeuvre
+    await this.oeuvreService.findOne(id_oeuvre);
+
+    const existingSavedOeuvre = await this.prismaService.sauvegarde.findUnique({
+      where: {
+        id_client_id_oeuvre: {
+          id_client,
+          id_oeuvre,
+        },
+      },
+    });
+
+    return existingSavedOeuvre ? true : false;
+  }
+
   async remove(id_client: number, id_oeuvre: number) {
     await this.oeuvreService.findOne(id_oeuvre);
 
