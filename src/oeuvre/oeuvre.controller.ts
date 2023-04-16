@@ -8,6 +8,7 @@ import {
   Body,
   ParseIntPipe,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { OeuvreService } from './oeuvre.service';
 import { CreateOeuvreDto } from './dtos/create-oeuvre.dto';
@@ -29,8 +30,8 @@ export class OeuvreController {
     return this.oeuvreService.findOne(id);
   }
 
-  @Get('search/:titre')
-  findByTitreOeuvre(@Param('titre') titre_oeuvre: string) {
+  @Get('search/titre')
+  findByTitreOeuvre(@Query('titre_oeuvre') titre_oeuvre: string) {
     return this.oeuvreService.findByTitreOeuvre(titre_oeuvre);
   }
 

@@ -52,12 +52,12 @@ export class OeuvreService {
   }
 
   /**
-   * Find 1 categorie by `titre_oeuvre`
+   * Find many oeuvres by `titre_oeuvre`
    * @param {string} titre_oeuvre - The name of the oeuvre to search for
    * @returns The found oeuvre, or NotFoundException if none were found
    */
-  async findByTitreOeuvre(titre_oeuvre: string): Promise<Oeuvre> {
-    const oeuvre = await this.prismaService.oeuvre.findFirst({
+  async findByTitreOeuvre(titre_oeuvre: string): Promise<Oeuvre[]> {
+    const oeuvres = await this.prismaService.oeuvre.findMany({
       where: {
         titre_oeuvre: {
           contains: titre_oeuvre,
@@ -66,13 +66,13 @@ export class OeuvreService {
       },
     });
 
-    if (!oeuvre) {
+    if (!oeuvres.length) {
       throw new NotFoundException(
         `No oeuvre found with titre_oeuvre: ${titre_oeuvre}`,
       );
     }
 
-    return oeuvre;
+    return oeuvres;
   }
 
   /**

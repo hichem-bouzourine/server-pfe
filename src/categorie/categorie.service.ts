@@ -49,12 +49,12 @@ export class CategorieService {
   }
 
   /**
-   * Find 1 categorie by nom_categorie
+   * Find many categories by nom_categorie
    * @param nom_categorie The name of the category to search for
    * @returns The found categorie, or NotFoundException if none were found
    */
-  async findByNomCategorie(nom_categorie: string): Promise<Categorie> {
-    const categorie = await this.prismaService.categorie.findFirst({
+  async findByNomCategorie(nom_categorie: string): Promise<Categorie[]> {
+    const categorie = await this.prismaService.categorie.findMany({
       where: {
         nom_categorie: {
           contains: nom_categorie,
@@ -63,7 +63,7 @@ export class CategorieService {
       },
     });
 
-    if (!categorie) {
+    if (!categorie.length) {
       throw new NotFoundException(
         `No categories found with nom_categorie: ${nom_categorie}`,
       );
