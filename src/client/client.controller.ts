@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ClientService } from './client.service';
 
 @Controller('client')
@@ -11,7 +11,12 @@ export class ClientController {
   }
 
   @Get(':id')
-  getOne(@Param('id') id: number) {
+  getOne(@Param('id', ParseIntPipe) id: number) {
     return this.clientService.getOne(id);
+  }
+
+  @Get('search/name')
+  getManyByName(@Query('nom') nom: string) {
+    return this.clientService.getManyByName(nom);
   }
 }

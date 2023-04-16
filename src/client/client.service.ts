@@ -107,4 +107,31 @@ export class ClientService {
 
     return user;
   }
+
+  async getManyByName(nom: string) {
+    const clients = await this.prismaService.client.findMany({
+      where: {
+        Utilisateur: {
+          nom: {
+            contains: nom,
+            mode: 'insensitive',
+          },
+        },
+      },
+      select: {
+        Utilisateur: {
+          select: {
+            ...utilisateurSelect,
+          },
+        },
+        preference_art: true,
+      },
+    });
+
+    if (!clients.length) {
+      throw new NotFoundException(`No Client found with nom: ${nom}`);
+    }
+
+    return clients;
+  }
 }
