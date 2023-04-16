@@ -36,6 +36,11 @@ export class NoteController {
     return this.noteService.findOne(id_oeuvre, id_client);
   }
 
+  @Get('avg')
+  getCountAndAvgForOeuvre(@Query('id_oeuvre') id_oeuvre: number) {
+    return this.noteService.getCountAndAvgForOeuvre(id_oeuvre);
+  }
+
   @Patch(':id_oeuvre')
   update(
     @Param('id_oeuvre') id_oeuvre: number,

@@ -90,6 +90,44 @@ export class NoteService {
     return note;
   }
 
+  async getCountAndAvgForOeuvre(id_oeuvre: number) {
+    // Check the existance of Oeuvre.
+    const oeuvre = await this.prismaService.oeuvre.findUnique({
+      where: { id_oeuvre },
+    });
+
+    if (!oeuvre) {
+      throw new NotFoundException(`Oeuvre with id ${id_oeuvre} not found`);
+    }
+    // Check the existance of Notes for the Oeuvre.
+    const notes = await this.prismaService.note.findMany({
+      where: { id_oeuvre },
+    });
+
+    if (!notes.length) {
+      throw new NotFoundException(`No Notes for Oeuvre with id ${id_oeuvre}`);
+    }
+
+    // Initialize values
+    const count: number = notes.length;
+    let total: number = 0;
+
+    // Iterate the array of notes per oeuvre and calculate the total notes.
+    for (let i = 0; i < notes.length; i++) {
+      const element = notes[i];
+      total += element.note;
+    }
+
+    // Calculate the average note for the oeuvre
+    const avg = Math.floor(total / count);
+
+    return {
+      id_oeuvre,
+      count,
+      avg,
+    };
+  }
+
   async update(
     id_oeuvre: number,
     updateNoteDto: UpdateNoteDto,
