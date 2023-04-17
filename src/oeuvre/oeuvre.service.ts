@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -73,6 +74,46 @@ export class OeuvreService {
     }
 
     return oeuvres;
+  }
+
+  /**
+   * Find many oeuvres by nom_categorie
+   * @param nom_categorie
+   * @returns Array of oeuvres that matches the criteria
+   * @throws BadRequestException if param is `undefined`
+   * @throws NotFoundException if no oeuvre matches the criteria
+   */
+  async findByCategorie(nom_categorie: string) {
+    if (!nom_categorie) {
+      throw new BadRequestException('Nom categorie is empty');
+    }
+
+    const categories = await this.categorieService.findByNomCategorie(
+      nom_categorie,
+    );
+
+    let oeuvresByCategorie: Oeuvre[] = [];
+
+    for (let i = 0; i < categories.length; i++) {
+      const id_categorie = categories[i].id_categorie;
+      const oeuvres = await this.prismaService.oeuvre.findMany({
+        where: {
+          id_categorie,
+        },
+      });
+
+      if (oeuvres) {
+        oeuvresByCategorie = [...oeuvresByCategorie, ...oeuvres];
+      }
+    }
+
+    if (!oeuvresByCategorie.length) {
+      throw new NotFoundException(
+        `Oeuvres with categorie ${nom_categorie} not found.`,
+      );
+    }
+
+    return oeuvresByCategorie;
   }
 
   /**

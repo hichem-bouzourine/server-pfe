@@ -35,6 +35,11 @@ export class OeuvreController {
     return this.oeuvreService.findByTitreOeuvre(titre_oeuvre);
   }
 
+  @Get('search/categorie')
+  findByCategorie(@Query('nom_categorie') nom_categorie: string) {
+    return this.oeuvreService.findByCategorie(nom_categorie);
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Post()
   create(
