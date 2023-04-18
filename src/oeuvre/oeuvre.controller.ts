@@ -40,6 +40,11 @@ export class OeuvreController {
     return this.oeuvreService.findByCategorie(nom_categorie);
   }
 
+  @Get('search/categorie/:id_categorie')
+  findByIDCategorie(@Param('id_categorie', ParseIntPipe) id_categorie: number) {
+    return this.oeuvreService.findByIDCategorie(id_categorie);
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Post()
   create(

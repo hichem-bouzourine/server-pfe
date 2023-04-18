@@ -116,6 +116,23 @@ export class OeuvreService {
     return oeuvresByCategorie;
   }
 
+  async findByIDCategorie(id_categorie: number) {
+    await this.categorieService.findOne(id_categorie);
+
+    const oeuvres = await this.prismaService.oeuvre.findMany({
+      where: {
+        id_categorie,
+      },
+    });
+
+    if (!oeuvres.length) {
+      throw new NotFoundException(
+        `Oeuvres with categorie ${id_categorie} not found.`,
+      );
+    }
+
+    return oeuvres;
+  }
   /**
    * Creates a new oeuvre.
    *
