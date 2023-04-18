@@ -19,4 +19,11 @@ export class ArtisanController {
   getManyByName(@Query('nom') nom: string, @Query('prenom') prenom: string) {
     return this.artisanService.getManyByName(nom, prenom);
   }
+
+  @Get('search/oeuvres/:id_artisan')
+  getAllOeuvresForArtisan(
+    @Param('id_artisan', ParseIntPipe) id_artisan: number,
+  ) {
+    return this.artisanService.getAllOeuvresForArtisan(id_artisan);
+  }
 }

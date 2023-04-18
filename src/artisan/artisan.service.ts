@@ -182,4 +182,22 @@ export class ArtisanService {
 
     return artisans;
   }
+
+  async getAllOeuvresForArtisan(id_artisan: number) {
+    await this.getOne(id_artisan);
+
+    const oeuvres = await this.prismaService.oeuvre.findMany({
+      where: {
+        id_artisan,
+      },
+    });
+
+    if (!oeuvres.length) {
+      throw new NotFoundException(
+        `No oeuvre found for artisan with ID ${id_artisan}`,
+      );
+    }
+
+    return oeuvres;
+  }
 }
