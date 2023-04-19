@@ -11,6 +11,11 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+
+  app.enableCors({
+    origin: '*',
+  });
+
   const PORT = process.env.PORT || 3000;
   await app.listen(PORT);
 }
