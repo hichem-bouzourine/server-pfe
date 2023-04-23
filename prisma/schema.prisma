@@ -95,23 +95,34 @@ model Fournisseur {
   
   Utilisateur      Utilisateur    @relation(fields: [id_fournisseur], references: [id_utilisateur], onDelete: Cascade)
   
-  Fourniture       Fourniture[]
+  PublicationFournitures       PublicationFourniture[]
   CommandesPrisesEnCharge    Commande[]
 }
 
 model Fourniture {
   id_fourniture         Int           @id @default(autoincrement())
   nom_fourniture        String
-  prix_fourniture       Float
   photo                 String[]
-  stock_disponible      Int
+  
+  PublicationFournitures       PublicationFourniture[]
+  Commandes             Commande[]
+  
+}
+
+model PublicationFourniture {
   id_fournisseur        Int
+  id_fourniture         Int
+  prix                  Float
+  quantite              Int
+
   
   fournisseur           Fournisseur  @relation(fields: [id_fournisseur], references: [id_fournisseur], onDelete: Cascade)
-  
-  commandeFournitures   CommandeFourniture[]
-  Commandes             Commande[]
+  fourniture            Fourniture   @relation(fields: [id_fourniture], references: [id_fourniture], onDelete: Cascade)
+
+  @@id([id_fournisseur, id_fourniture])
+
 }
+
 
 model Commande {
   id_commande       Int            @id @default(autoincrement())
@@ -127,18 +138,6 @@ model Commande {
   artisan           Artisan       @relation(fields: [id_artisan], references: [id_artisan], onDelete: Cascade)
   fournisseur       Fournisseur   @relation(fields: [id_fournisseur], references: [id_fournisseur], onDelete: Cascade)
   
-  comandeFournitures CommandeFourniture[]
-}
-
-model CommandeFourniture {
-  id_commande     Int       @unique
-  id_fourniture   Int
-  quantite        Int
-  
-  commande        Commande  @relation(fields: [id_commande], references: [id_commande], onDelete: Cascade)
-  fourniture      Fourniture @relation(fields: [id_fourniture], references: [id_fourniture], onDelete: Cascade)
-
-  @@id([id_commande, id_fourniture])
 }
 
 model Oeuvre {
