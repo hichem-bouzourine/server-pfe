@@ -23,8 +23,7 @@ model Utilisateur {
   prenom              String
   date_de_naissance   DateTime
   sexe                String
-  ville               String
-  adresse             String
+  id_adresse          Int
   email               String  @unique
   password            String
   telephone           String
@@ -36,6 +35,8 @@ model Utilisateur {
   Client              Client?            
   Fournisseur         Fournisseur?
 
+  adresse             Adresse @relation(fields: [id_adresse], references: [id], onDelete: Cascade)
+  
   messages            Message[]
 
   reportedProfiles    SignalementProfil[] @relation("reported_profiles")
@@ -87,6 +88,41 @@ model Client {
   Sauvegarde         Sauvegarde[] 
 }
 
+model Wilaya {
+  id                  Int       @id   @default(autoincrement())
+  nom                 String
+
+  adresses            Adresse[]
+}
+
+model Daira {
+  id                  Int       @id   @default(autoincrement())
+  nom                 String
+
+  adresses            Adresse[]
+}
+
+model Commune {
+  id                  Int       @id   @default(autoincrement())
+  nom                 String
+
+  adresses            Adresse[]
+}
+
+model Adresse {
+  id                  Int       @id   @default(autoincrement())
+  Rue                 String
+  id_Wilaya           Int
+  id_Daira            Int
+  id_Commune          Int
+
+  wilaya              Wilaya @relation(fields: [id_Wilaya], references: [id], onDelete: Cascade)
+  daira               Daira @relation(fields: [id_Daira], references: [id], onDelete: Cascade)
+  commune             Commune @relation(fields: [id_Commune], references: [id], onDelete: Cascade)
+
+  utilisateurs        Utilisateur[]
+  commandes           Commande[]
+}
 
 model Fournisseur {
   id_fournisseur   Int      @id
@@ -96,7 +132,7 @@ model Fournisseur {
   Utilisateur      Utilisateur    @relation(fields: [id_fournisseur], references: [id_utilisateur], onDelete: Cascade)
   
   PublicationFournitures       PublicationFourniture[]
-  CommandesPrisesEnCharge    Commande[]
+  CommandesPrisesEnCharge      Commande[]
 }
 
 model Fourniture {
@@ -129,11 +165,12 @@ model Commande {
   etat_commande     Boolean
   date_commande     DateTime
   quantite          Int
-  adresse_livraison String
+  adresse_livraison Int
   id_fourniture     Int
   id_artisan        Int
   id_fournisseur    Int
   
+  adresse           Adresse       @relation(fields: [adresse_livraison], references: [id], onDelete: Cascade)
   fourniture        Fourniture    @relation(fields: [id_fourniture], references: [id_fourniture], onDelete: Cascade)
   artisan           Artisan       @relation(fields: [id_artisan], references: [id_artisan], onDelete: Cascade)
   fournisseur       Fournisseur   @relation(fields: [id_fournisseur], references: [id_fournisseur], onDelete: Cascade)
