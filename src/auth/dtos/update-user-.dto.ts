@@ -66,15 +66,19 @@ export class UpdateUserDto {
 
   @IsNumber()
   @IsOptional()
-  annee_experience?: number;
+  annee_debut_experience?: number;
 
   @IsNumber()
   @IsOptional()
   preference_art?: number;
 
+  @IsNumber()
+  @IsOptional()
+  specialite?: number;
+
   @IsString()
   @IsOptional()
-  specialite?: string;
+  raison_social?: string;
 
   @IsOptional()
   @IsBoolean()

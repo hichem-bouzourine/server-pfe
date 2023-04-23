@@ -55,11 +55,12 @@ model Administrateur {
 model Artisan {
   id_artisan       Int      @id
   description      String
-  annee_experience Int
-  specialite       String
+  annee_debut_experience Int
+  specialite       Int
   statutCompte     Boolean
   
   Utilisateur      Utilisateur     @relation(fields: [id_artisan], references: [id_utilisateur], onDelete: Cascade)
+  categorie        Categorie       @relation(fields: [specialite], references: [id_categorie], onDelete: Cascade)
   
   Oeuvres          Oeuvre[]
   Commandes        Commande[]       
@@ -89,7 +90,7 @@ model Client {
 
 model Fournisseur {
   id_fournisseur   Int      @id
-  specialite       String
+  raison_social    String
   statutCompte     Boolean
   
   Utilisateur      Utilisateur    @relation(fields: [id_fournisseur], references: [id_utilisateur], onDelete: Cascade)
@@ -174,6 +175,7 @@ model Categorie {
   oeuvres          Oeuvre[]
   ConsulteCategorie ConsulteCategorie[]
   clients          Client[]
+  artisans         Artisan[]
 }
 
 model Achat {

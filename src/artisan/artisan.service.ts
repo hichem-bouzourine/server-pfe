@@ -17,7 +17,7 @@ export class ArtisanService {
   async createArtisan(body: CreateArtisanDto) {
     const {
       description,
-      annee_experience,
+      annee_debut_experience,
       specialite,
       statutCompte,
       date_de_naissance,
@@ -36,6 +36,19 @@ export class ArtisanService {
 
     if (userByEmail) throw new BadRequestException('user already exists');
 
+    // Check if `specialite` is referencing categorie
+    const categorie = await this.prismaService.categorie.findUnique({
+      where: {
+        id_categorie: specialite,
+      },
+    });
+
+    if (!categorie) {
+      throw new NotFoundException(
+        `Specialité for categorie with id ${specialite} not found`,
+      );
+    }
+
     // Hash the password
     const hashedPassword = await hashPassword(password);
 
@@ -49,7 +62,7 @@ export class ArtisanService {
         Artisan: {
           create: {
             description,
-            annee_experience,
+            annee_debut_experience,
             specialite,
             statutCompte,
           },
@@ -87,7 +100,7 @@ export class ArtisanService {
           },
         },
         description: true,
-        annee_experience: true,
+        annee_debut_experience: true,
         specialite: true,
         statutCompte: true,
       },
@@ -110,7 +123,7 @@ export class ArtisanService {
           },
         },
         description: true,
-        annee_experience: true,
+        annee_debut_experience: true,
         specialite: true,
         statutCompte: true,
       },
@@ -168,7 +181,7 @@ export class ArtisanService {
           },
         },
         description: true,
-        annee_experience: true,
+        annee_debut_experience: true,
         specialite: true,
         statutCompte: true,
       },

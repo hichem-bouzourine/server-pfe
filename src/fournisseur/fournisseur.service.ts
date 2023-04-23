@@ -15,7 +15,7 @@ export class FournisseurService {
 
   async createFournisseur(body: CreateFournisseurDto) {
     const {
-      specialite,
+      raison_social,
       statutCompte,
       date_de_naissance,
       date_inscription,
@@ -45,7 +45,7 @@ export class FournisseurService {
         date_inscription: new Date(date_inscription),
         Fournisseur: {
           create: {
-            specialite,
+            raison_social,
             statutCompte,
           },
         },
@@ -81,7 +81,7 @@ export class FournisseurService {
             ...utilisateurSelect,
           },
         },
-        specialite: true,
+        raison_social: true,
         statutCompte: true,
       },
     });
@@ -102,7 +102,7 @@ export class FournisseurService {
             ...utilisateurSelect,
           },
         },
-        specialite: true,
+        raison_social: true,
         statutCompte: true,
       },
     });

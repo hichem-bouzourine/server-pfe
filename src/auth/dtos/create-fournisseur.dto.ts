@@ -4,7 +4,7 @@ import { CreateUserDto } from './create-user.dto';
 export class CreateFournisseurDto extends CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  specialite: string;
+  raison_social: string;
 
   @IsBoolean()
   @IsNotEmpty()

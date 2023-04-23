@@ -8,11 +8,11 @@ export class CreateArtisanDto extends CreateUserDto {
 
   @IsNumber()
   @IsNotEmpty()
-  annee_experience: number;
+  annee_debut_experience: number;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  specialite: string;
+  specialite: number;
 
   @IsBoolean()
   @IsNotEmpty()

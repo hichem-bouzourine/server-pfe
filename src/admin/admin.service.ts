@@ -181,9 +181,10 @@ export class AdminService {
     if (!user) throw new NotFoundException('User not found');
 
     const {
-      annee_experience,
+      annee_debut_experience,
       description,
       specialite,
+      raison_social,
       statutCompte,
       preference_art,
       email,
@@ -206,7 +207,7 @@ export class AdminService {
             id_artisan: userId,
           },
           data: {
-            annee_experience,
+            annee_debut_experience,
             description,
             specialite,
             statutCompte,
@@ -220,7 +221,7 @@ export class AdminService {
             id_fournisseur: userId,
           },
           data: {
-            specialite,
+            raison_social,
             statutCompte,
           },
         });
