@@ -68,10 +68,12 @@ model Artisan {
 }
 
 model Client {
-  id_client     Int      @id
-  preference_art     String?
+  id_client          Int      @id
+  preference_art     Int      
   
   Utilisateur        Utilisateur @relation(fields: [id_client], references: [id_utilisateur], onDelete: Cascade)
+  categorie          Categorie @relation(fields: [preference_art], references: [id_categorie], onDelete: Cascade)
+  
   
   Achats             Achat[]
   Conversation       Conversation[]
@@ -171,6 +173,7 @@ model Categorie {
 
   oeuvres          Oeuvre[]
   ConsulteCategorie ConsulteCategorie[]
+  clients          Client[]
 }
 
 model Achat {

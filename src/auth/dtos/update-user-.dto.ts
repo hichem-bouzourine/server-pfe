@@ -68,9 +68,9 @@ export class UpdateUserDto {
   @IsOptional()
   annee_experience?: number;
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  preference_art?: string;
+  preference_art?: number;
 
   @IsString()
   @IsOptional()

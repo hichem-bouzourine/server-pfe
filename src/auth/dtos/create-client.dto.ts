@@ -1,8 +1,8 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { CreateUserDto } from './create-user.dto';
 
 export class CreateClientDto extends CreateUserDto {
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  preference_art: string;
+  preference_art: number;
 }

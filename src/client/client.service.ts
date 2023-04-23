@@ -32,6 +32,19 @@ export class ClientService {
 
     if (userByEmail) throw new BadRequestException('user already exists');
 
+    // Check if `preference_art` is referencing categorie
+    const categorie = await this.prismaService.categorie.findUnique({
+      where: {
+        id_categorie: preference_art,
+      },
+    });
+
+    if (!categorie) {
+      throw new NotFoundException(
+        `preference art for categorie with id ${preference_art} not found`,
+      );
+    }
+
     // Hash the password
     const hashedPassword = await hashPassword(password);
 
