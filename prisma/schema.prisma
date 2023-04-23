@@ -157,12 +157,46 @@ model Oeuvre {
   categorie                Categorie    @relation(fields: [id_categorie], references: [id_categorie], onDelete: Cascade)
   artisan                  Artisan      @relation(fields: [id_artisan], references: [id_artisan], onDelete: Cascade)
   
+  materiaux                 UtiliseMateriau[]
+  techniques                 UtiliseTechnique[]
   achats                   Achat[]
   Notes                    Note[]
   Avis                     Avis[]
   SignalementOeuvre        SignalementOeuvre[]
   Sauvegardes              Sauvegarde[]
   ConsulteOeuvre           ConsulteOeuvre[]
+}
+
+model Materiau {
+  id                Int @id @default(autoincrement())
+  nom               String
+
+  utilisation       UtiliseMateriau[]
+}
+model Technique {
+  id                Int @id @default(autoincrement())
+  nom               String
+
+  utilisation       UtiliseTechnique[]
+}
+
+model UtiliseMateriau {
+  id_oeuvre         Int
+  id_materiau       Int
+
+  oeuvre            Oeuvre @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
+  materiau          Materiau @relation(fields: [id_materiau], references: [id], onDelete: Cascade)
+
+  @@id([id_materiau, id_oeuvre])
+}
+model UtiliseTechnique {
+  id_oeuvre         Int
+  id_technique      Int
+
+  oeuvre            Oeuvre @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
+  technique         Technique @relation(fields: [id_technique], references: [id], onDelete: Cascade)
+
+  @@id([id_technique, id_oeuvre])
 }
 
 model Categorie {
