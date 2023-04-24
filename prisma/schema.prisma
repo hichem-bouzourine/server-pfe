@@ -92,19 +92,26 @@ model Wilaya {
   id                  Int       @id   @default(autoincrement())
   nom                 String
 
-  adresses            Adresse[]
+  dairas              Daira[]
 }
 
 model Daira {
   id                  Int       @id   @default(autoincrement())
   nom                 String
+  id_wilaya           Int
 
-  adresses            Adresse[]
+  wilaya              Wilaya @relation(fields: [id_wilaya], references: [id], onDelete: Cascade)
+
+  communes            Commune[]
 }
 
 model Commune {
   id                  Int       @id   @default(autoincrement())
   nom                 String
+  code_postal         Int?
+  id_daira            Int
+
+  daira               Daira @relation(fields: [id_daira], references: [id], onDelete: Cascade)
 
   adresses            Adresse[]
 }
@@ -112,12 +119,8 @@ model Commune {
 model Adresse {
   id                  Int       @id   @default(autoincrement())
   Rue                 String
-  id_Wilaya           Int
-  id_Daira            Int
   id_Commune          Int
 
-  wilaya              Wilaya @relation(fields: [id_Wilaya], references: [id], onDelete: Cascade)
-  daira               Daira @relation(fields: [id_Daira], references: [id], onDelete: Cascade)
   commune             Commune @relation(fields: [id_Commune], references: [id], onDelete: Cascade)
 
   utilisateurs        Utilisateur[]
