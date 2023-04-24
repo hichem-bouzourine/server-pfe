@@ -11,10 +11,14 @@ import { signToken } from '../utils/signtoken.jwt';
 import { utilisateurSelect } from '../types/utilisateur-select';
 import { UpdateUserDto } from 'src/auth/dtos/update-user-.dto';
 import { Type_User } from '@prisma/client';
+import { AdresseService } from '../adresse/adresse.service';
 
 @Injectable()
 export class AdminService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private adresseService: AdresseService,
+  ) {}
 
   async createAdmin(body: CreateAdminDto) {
     const {
@@ -22,6 +26,8 @@ export class AdminService {
       date_inscription,
       password,
       email,
+      id_Commune,
+      Rue,
       ...userData
     } = body;
 
@@ -37,11 +43,20 @@ export class AdminService {
     // Hash the password
     const hashedPassword = await hashPassword(password);
 
+    // Create Adresse and get its ID
+    const adresse = await this.adresseService.createAdresse({
+      id_Commune,
+      Rue,
+    });
+
+    const { id: id_adresse } = adresse;
+
     const user = await this.prismaService.utilisateur.create({
       data: {
         ...userData,
         email: email.toLowerCase().trim(),
         password: hashedPassword,
+        id_adresse,
         date_de_naissance: new Date(date_de_naissance),
         date_inscription: new Date(date_inscription),
         Administrateur: {

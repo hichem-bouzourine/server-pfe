@@ -19,6 +19,7 @@ import { NoteModule } from './note/note.module';
 import { ConsulteOeuvreModule } from './consulte-oeuvre/consulte-oeuvre.module';
 import { ConsulteCategorieModule } from './consulte-categorie/consulte-categorie.module';
 import { SauvegardeOeuvreModule } from './sauvegarde-oeuvre/sauvegarde-oeuvre.module';
+import { AdresseModule } from './adresse/adresse.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { SauvegardeOeuvreModule } from './sauvegarde-oeuvre/sauvegarde-oeuvre.mo
     ConsulteOeuvreModule,
     ConsulteCategorieModule,
     SauvegardeOeuvreModule,
+    AdresseModule,
   ],
   controllers: [],
   providers: [JwtStrategy],

@@ -33,12 +33,8 @@ export class UpdateUserDto {
   sexe?: string;
 
   @IsOptional()
-  @IsString()
-  ville?: string;
-
-  @IsOptional()
-  @IsString()
-  adresse?: string;
+  @IsNumber()
+  id_adresse?: number;
 
   @IsOptional()
   @IsEmail()

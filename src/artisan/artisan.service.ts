@@ -9,10 +9,14 @@ import { PrismaService } from '../prisma/prisma.service';
 import { signToken } from '../utils/signtoken.jwt';
 import { utilisateurSelect } from '../types/utilisateur-select';
 import { Artisan, Utilisateur } from '@prisma/client';
+import { AdresseService } from '../adresse/adresse.service';
 
 @Injectable()
 export class ArtisanService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private adresseService: AdresseService,
+  ) {}
 
   async createArtisan(body: CreateArtisanDto) {
     const {
@@ -24,6 +28,8 @@ export class ArtisanService {
       date_inscription,
       password,
       email,
+      Rue,
+      id_Commune,
       ...userData
     } = body;
 
@@ -52,11 +58,20 @@ export class ArtisanService {
     // Hash the password
     const hashedPassword = await hashPassword(password);
 
+    // Create Adresse and get its ID
+    const adresse = await this.adresseService.createAdresse({
+      id_Commune,
+      Rue,
+    });
+
+    const { id: id_adresse } = adresse;
+
     const user = await this.prismaService.utilisateur.create({
       data: {
         ...userData,
         email: email.toLowerCase().trim(),
         password: hashedPassword,
+        id_adresse,
         date_de_naissance: new Date(date_de_naissance),
         date_inscription: new Date(date_inscription),
         Artisan: {

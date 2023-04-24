@@ -8,10 +8,14 @@ import { CreateFournisseurDto } from '../auth/dtos/create-fournisseur.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { signToken } from '../utils/signtoken.jwt';
 import { utilisateurSelect } from '../types/utilisateur-select';
+import { AdresseService } from '../adresse/adresse.service';
 
 @Injectable()
 export class FournisseurService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private adresseService: AdresseService,
+  ) {}
 
   async createFournisseur(body: CreateFournisseurDto) {
     const {
@@ -21,6 +25,8 @@ export class FournisseurService {
       date_inscription,
       password,
       email,
+      Rue,
+      id_Commune,
       ...userData
     } = body;
 
@@ -36,11 +42,20 @@ export class FournisseurService {
     // Hash the password
     const hashedPassword = await hashPassword(password);
 
+    // Create Adresse and get its ID
+    const adresse = await this.adresseService.createAdresse({
+      id_Commune,
+      Rue,
+    });
+
+    const { id: id_adresse } = adresse;
+
     const user = await this.prismaService.utilisateur.create({
       data: {
         ...userData,
         email: email.toLowerCase().trim(),
         password: hashedPassword,
+        id_adresse,
         date_de_naissance: new Date(date_de_naissance),
         date_inscription: new Date(date_inscription),
         Fournisseur: {

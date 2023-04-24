@@ -3,6 +3,7 @@ import {
   IsDate,
   IsEmail,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
@@ -28,11 +29,11 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  ville: string;
+  Rue: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  adresse: string;
+  id_Commune: number;
 
   @IsEmail()
   @IsNotEmpty()
