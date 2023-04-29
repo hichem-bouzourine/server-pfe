@@ -344,5 +344,7 @@ export class AdminService {
     if (!deletedUser) {
       throw new BadGatewayException('Failed to delete user');
     }
+
+    return deletedUser;
   }
 }
