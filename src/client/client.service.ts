@@ -69,7 +69,7 @@ export class ClientService {
         password: hashedPassword,
         id_adresse,
         date_de_naissance: new Date(date_de_naissance),
-        date_inscription: new Date(date_inscription),
+        date_inscription: new Date(),
         Client: {
           create: {
             preference_art,

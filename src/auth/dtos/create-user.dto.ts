@@ -52,7 +52,7 @@ export class CreateUserDto {
   type: Type_User;
 
   @IsDate()
-  @IsNotEmpty()
+  @IsOptional()
   @Type(() => Date)
   date_inscription: Date;
 
