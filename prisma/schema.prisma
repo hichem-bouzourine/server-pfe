@@ -17,6 +17,12 @@ enum Type_User {
   FOURNISSEUR
 }
 
+enum Resultat_signalement{
+  ACCEPTE
+  REFUSE
+  NON_TRAITE
+}
+
 model Utilisateur {
   id_utilisateur      Int      @id @default(autoincrement())
   nom                 String
@@ -324,42 +330,45 @@ model SignalementProfil {
   id_signalement    Int    @id @default(autoincrement())
   raison            String
   date              DateTime      @default(now())
-  id_signale        Int
-  id_rapporteur     Int
+  id_signale        Int?
+  id_rapporteur     Int?
   id_admin          Int?
-  etatSignalement   Boolean
+  etatSignalement   Boolean      
+  resultat          Boolean?      
 
-  UtilisateurSignale       Utilisateur      @relation("reported_profiles" ,fields: [id_signale], references: [id_utilisateur], onDelete: Cascade)
-  UtilisateurRapporteur    Utilisateur      @relation("reports" ,fields: [id_rapporteur], references: [id_utilisateur], onDelete: Cascade)
-  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+  UtilisateurSignale       Utilisateur?      @relation("reported_profiles" ,fields: [id_signale], references: [id_utilisateur], onDelete: SetNull)
+  UtilisateurRapporteur    Utilisateur?      @relation("reports" ,fields: [id_rapporteur], references: [id_utilisateur], onDelete: SetNull)
+  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin], onDelete: SetNull)
 }
 
 model SignalementOeuvre {
   id_signalement    Int    @id @default(autoincrement())
   raison            String
   date              DateTime      @default(now())
-  id_oeuvre         Int
-  id_client         Int
+  id_oeuvre         Int?
+  id_client         Int?
   id_admin          Int?
-  etatSignalement   Boolean
-  
-  Oeuvre            Oeuvre   @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
-  Client            Client      @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
-  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+  etatSignalement   Boolean      
+  resultat          Boolean?      
+
+  Oeuvre            Oeuvre?   @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: SetNull)
+  Client            Client?      @relation(fields: [id_client], references: [id_client], onDelete: SetNull)
+  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin], onDelete: SetNull)
 }
 
 model SignalementAvis {
   id_signalement    Int    @id @default(autoincrement())
   raison            String
   date              DateTime      @default(now())
-  id_avis           Int
-  id_client         Int
+  id_avis           Int?
+  id_client         Int?
   id_admin          Int?
   etatSignalement   Boolean
-  
-  Avis              Avis    @relation(fields: [id_avis], references: [id_avis], onDelete: Cascade)
-  Client            Client      @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
-  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin], onDelete: Cascade)
+  resultat          Boolean?      
+
+  Avis              Avis?    @relation(fields: [id_avis], references: [id_avis], onDelete: SetNull)
+  Client            Client?      @relation(fields: [id_client], references: [id_client], onDelete: SetNull)
+  Administrateur    Administrateur?    @relation(fields: [id_admin], references: [id_admin], onDelete: SetNull)
 }
 
 model ConsulteCategorie {

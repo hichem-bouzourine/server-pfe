@@ -7,6 +7,8 @@ import {
   Param,
   ParseIntPipe,
   UseGuards,
+  Query,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import { SignalementProfileService } from './signalement-profile.service';
 import { CreateSignalementProfileDto } from './dto/create-signalement-profile.dto';
@@ -35,10 +37,15 @@ export class SignalementProfileController {
   @UseGuards(AdminGuard)
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
-  update(
+  traiteSignale(
     @Param('id', ParseIntPipe) id: number,
+    @Query('resultat', ParseBoolPipe) resultat: boolean,
     @CurrentUser('id_utilisateur') id_utilisateur: number,
   ) {
-    return this.signalementProfileService.approveSignale(id_utilisateur, id);
+    return this.signalementProfileService.traiteSignale(
+      id_utilisateur,
+      id,
+      resultat,
+    );
   }
 }
