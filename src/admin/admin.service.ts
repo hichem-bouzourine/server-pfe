@@ -173,6 +173,29 @@ export class AdminService {
   }
 
   /**
+   * Get user by its ID
+   * @param id
+   * @returns Utilisateur
+   */
+  async getOneUserById(id: number) {
+    const user = await this.prismaService.utilisateur.findUnique({
+      where: {
+        id_utilisateur: id,
+      },
+      select: {
+        ...utilisateurSelect,
+        Administrateur: true,
+        Artisan: true,
+        Fournisseur: true,
+        Client: true,
+      },
+    });
+
+    if (!user) throw new NotFoundException('User not found.');
+    return user;
+  }
+
+  /**
    * Updates properties of user
    * @param userId
    * @param body

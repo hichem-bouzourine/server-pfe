@@ -34,6 +34,11 @@ export class AdminController {
     return this.adminService.getFullList();
   }
 
+  @Get('/userById/:id')
+  getOneUserById(@Param('id', ParseIntPipe) id: number) {
+    return this.adminService.getOneUserById(id);
+  }
+
   @Get('/users/:email')
   getOneUser(@Param('email') email: string) {
     return this.adminService.getOneUser(email.toLowerCase().trim());
