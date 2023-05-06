@@ -13,39 +13,39 @@ export class SauvegardeOeuvreService {
     private oeuvreService: OeuvreService,
   ) {}
 
-  async create(id_client: number, id_oeuvre: number) {
+  async create(id_utilisateur: number, id_oeuvre: number) {
     await this.oeuvreService.findOne(id_oeuvre);
 
     const existingSavedOeuvre = await this.prismaService.sauvegarde.findUnique({
-      where: { id_client_id_oeuvre: { id_client, id_oeuvre } },
+      where: { id_utilisateur_id_oeuvre: { id_utilisateur, id_oeuvre } },
     });
 
     if (existingSavedOeuvre) {
       throw new ConflictException(
-        `User with ID: ${id_client} already saved oeuvre with ID: ${id_oeuvre} `,
+        `User with ID: ${id_utilisateur} already saved oeuvre with ID: ${id_oeuvre} `,
       );
     }
 
     const savedOeuvre = await this.prismaService.sauvegarde.create({
       data: {
         id_oeuvre,
-        id_client,
+        id_utilisateur,
       },
     });
 
     return savedOeuvre;
   }
 
-  async findAllSavedOeuvreForClient(id_client: number) {
+  async findAllSavedOeuvreForUser(id_utilisateur: number) {
     const savedOeuvres = await this.prismaService.sauvegarde.findMany({
       where: {
-        id_client,
+        id_utilisateur,
       },
     });
 
     if (!savedOeuvres.length) {
       throw new NotFoundException(
-        `User with id ${id_client} is not saving an Oeuvre`,
+        `User with id ${id_utilisateur} is not saving an Oeuvre`,
       );
     }
 
@@ -53,7 +53,7 @@ export class SauvegardeOeuvreService {
   }
 
   async checkIfOeuvreIsSaved(
-    id_client: number,
+    id_utilisateur: number,
     id_oeuvre: number,
   ): Promise<boolean> {
     // Check the existance of the specified Oeuvre
@@ -61,8 +61,8 @@ export class SauvegardeOeuvreService {
 
     const existingSavedOeuvre = await this.prismaService.sauvegarde.findUnique({
       where: {
-        id_client_id_oeuvre: {
-          id_client,
+        id_utilisateur_id_oeuvre: {
+          id_utilisateur,
           id_oeuvre,
         },
       },
@@ -71,23 +71,23 @@ export class SauvegardeOeuvreService {
     return existingSavedOeuvre ? true : false;
   }
 
-  async remove(id_client: number, id_oeuvre: number) {
+  async remove(id_utilisateur: number, id_oeuvre: number) {
     await this.oeuvreService.findOne(id_oeuvre);
 
     const existingSavedOeuvre = await this.prismaService.sauvegarde.findUnique({
-      where: { id_client_id_oeuvre: { id_client, id_oeuvre } },
+      where: { id_utilisateur_id_oeuvre: { id_utilisateur, id_oeuvre } },
     });
 
     if (!existingSavedOeuvre) {
       throw new NotFoundException(
-        `User with ID: ${id_client} is not saving oeuvre with ID ${id_oeuvre} `,
+        `User with ID: ${id_utilisateur} is not saving oeuvre with ID ${id_oeuvre} `,
       );
     }
 
     const deletedSavedOeuvre = await this.prismaService.sauvegarde.delete({
       where: {
-        id_client_id_oeuvre: {
-          id_client,
+        id_utilisateur_id_oeuvre: {
+          id_utilisateur,
           id_oeuvre,
         },
       },

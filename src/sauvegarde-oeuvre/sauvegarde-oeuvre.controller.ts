@@ -10,9 +10,7 @@ import {
 import { SauvegardeOeuvreService } from './sauvegarde-oeuvre.service';
 import { CurrentUser } from '../auth/decorators/get-current-user.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { ClientGuard } from '../guards/client.guard';
 
-@UseGuards(ClientGuard)
 @UseGuards(AuthGuard('jwt'))
 @Controller('sauvegarde-oeuvre')
 export class SauvegardeOeuvreController {
@@ -23,23 +21,25 @@ export class SauvegardeOeuvreController {
   @Post()
   create(
     @Query('id_oeuvre', ParseIntPipe) id_oeuvre: number,
-    @CurrentUser('id_utilisateur') id_client: number,
+    @CurrentUser('id_utilisateur') id_utilisateur: number,
   ) {
-    return this.sauvegardeOeuvreService.create(id_client, id_oeuvre);
+    return this.sauvegardeOeuvreService.create(id_utilisateur, id_oeuvre);
   }
 
   @Get()
-  findAll(@CurrentUser('id_utilisateur') id_client: number) {
-    return this.sauvegardeOeuvreService.findAllSavedOeuvreForClient(id_client);
+  findAll(@CurrentUser('id_utilisateur') id_utilisateur: number) {
+    return this.sauvegardeOeuvreService.findAllSavedOeuvreForUser(
+      id_utilisateur,
+    );
   }
 
   @Get('isSaved')
   checkIfOeuvreIsSaved(
-    @CurrentUser('id_utilisateur') id_client: number,
+    @CurrentUser('id_utilisateur') id_utilisateur: number,
     @Query('id_oeuvre', ParseIntPipe) id_oeuvre: number,
   ) {
     return this.sauvegardeOeuvreService.checkIfOeuvreIsSaved(
-      id_client,
+      id_utilisateur,
       id_oeuvre,
     );
   }
@@ -47,8 +47,8 @@ export class SauvegardeOeuvreController {
   @Delete()
   remove(
     @Query('id_oeuvre', ParseIntPipe) id_oeuvre: number,
-    @CurrentUser('id_utilisateur') id_client: number,
+    @CurrentUser('id_utilisateur') id_utilisateur: number,
   ) {
-    return this.sauvegardeOeuvreService.remove(id_client, id_oeuvre);
+    return this.sauvegardeOeuvreService.remove(id_utilisateur, id_oeuvre);
   }
 }

@@ -44,6 +44,7 @@ model Utilisateur {
   adresse             Adresse @relation(fields: [id_adresse], references: [id], onDelete: Cascade)
   
   messages            Message[]
+  Sauvegarde          Sauvegarde[] 
 
   reportedProfiles    SignalementProfil[] @relation("reported_profiles")
   reportedBy          SignalementProfil[] @relation("reports")
@@ -91,7 +92,6 @@ model Client {
   SignalementAvis    SignalementAvis[] 
   ConsulteCategorie  ConsulteCategorie[] 
   ConsulteOeuvre     ConsulteOeuvre[] 
-  Sauvegarde         Sauvegarde[] 
 }
 
 model Wilaya {
@@ -392,10 +392,10 @@ model ConsulteOeuvre {
 }
 
 model Sauvegarde {
-  id_client      Int
+  id_utilisateur Int
   id_oeuvre      Int
   
-  Client        Client @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
-  Oeuvre        Oeuvre @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
-  @@id([id_client,id_oeuvre])
+  Utilisateur    Utilisateur @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
+  Oeuvre         Oeuvre @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
+  @@id([id_utilisateur,id_oeuvre])
 }
