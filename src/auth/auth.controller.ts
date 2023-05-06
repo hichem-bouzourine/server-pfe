@@ -1,4 +1,11 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AdminService } from '../admin/admin.service';
 import { ArtisanService } from '../artisan/artisan.service';
 import { ClientService } from '../client/client.service';
@@ -10,6 +17,9 @@ import { CreateArtisanDto } from './dtos/create-artisan.dto';
 import { CreateClientDto } from './dtos/create-client.dto';
 import { CreateFournisseurDto } from './dtos/create-fournisseur.dto';
 import { LoginDto } from './dtos/login-user.dto';
+import { CurrentUser } from './decorators/get-current-user.decorator';
+import { AuthGuard } from '@nestjs/passport';
+import { UpdateUserDto } from './dtos/update-user-.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -63,5 +73,15 @@ export class AuthController {
       body.email.toLowerCase().trim(),
       body.password,
     );
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('me')
+  update(
+    @CurrentUser('id_utilisateur') id: number,
+    @CurrentUser('type') type: string,
+    @Body() body: UpdateUserDto,
+  ) {
+    return this.authService.update(id, type, body);
   }
 }
