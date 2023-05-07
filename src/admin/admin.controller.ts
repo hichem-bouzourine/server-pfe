@@ -56,4 +56,9 @@ export class AdminController {
   deleteUser(@Param('id', ParseIntPipe) id: number) {
     return this.adminService.deleteUser(id);
   }
+
+  @Delete('oeuvre/:id')
+  deleteOeuvre(@Param('id', ParseIntPipe) id: number) {
+    return this.adminService.deleteOeuvre(id);
+  }
 }

@@ -370,4 +370,24 @@ export class AdminService {
 
     return deletedUser;
   }
+
+  async deleteOeuvre(id_oeuvre: number) {
+    const oeuvre = await this.prismaService.oeuvre.findUnique({
+      where: {
+        id_oeuvre,
+      },
+    });
+
+    if (!oeuvre) {
+      throw new NotFoundException(`Oeuvre with ID ${id_oeuvre} not found`);
+    }
+
+    const deletedOeuvre = await this.prismaService.oeuvre.delete({
+      where: {
+        id_oeuvre,
+      },
+    });
+
+    return deletedOeuvre;
+  }
 }
