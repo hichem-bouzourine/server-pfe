@@ -61,4 +61,19 @@ export class AdminController {
   deleteOeuvre(@Param('id', ParseIntPipe) id: number) {
     return this.adminService.deleteOeuvre(id);
   }
+
+  @Get('stats/oeuvres')
+  getOeuvreStats() {
+    return this.adminService.getOeuvresStats();
+  }
+
+  @Get('stats/categories')
+  getCategoriesStats() {
+    return this.adminService.getCategoriesStats();
+  }
+
+  @Get('stats/users')
+  getUsersStats() {
+    return this.adminService.getUsersStats();
+  }
 }

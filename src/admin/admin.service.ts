@@ -390,4 +390,16 @@ export class AdminService {
 
     return deletedOeuvre;
   }
+
+  async getOeuvresStats() {
+    return await this.prismaService.oeuvre.count();
+  }
+
+  async getCategoriesStats() {
+    return await this.prismaService.categorie.count();
+  }
+
+  async getUsersStats() {
+    return await this.prismaService.utilisateur.count();
+  }
 }
