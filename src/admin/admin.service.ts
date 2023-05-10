@@ -402,4 +402,21 @@ export class AdminService {
   async getUsersStats() {
     return await this.prismaService.utilisateur.count();
   }
+
+  async getUsersPerTypeStats() {
+    const response = (await this.prismaService
+      .$queryRaw`SELECT COUNT(*), "type" FROM "Utilisateur" GROUP BY "type"`) as {
+      type: string;
+      count: number;
+    }[];
+
+    const result = response.map((row) => {
+      return {
+        type: row.type,
+        count: Number(row.count),
+      };
+    });
+
+    return result;
+  }
 }

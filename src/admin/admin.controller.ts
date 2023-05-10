@@ -76,4 +76,9 @@ export class AdminController {
   getUsersStats() {
     return this.adminService.getUsersStats();
   }
+
+  @Get('stats/usersPerType')
+  getUsersPerTypeStats() {
+    return this.adminService.getUsersPerTypeStats();
+  }
 }
