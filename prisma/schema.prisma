@@ -281,7 +281,7 @@ model Conversation {
 
 model Message {
   id_message       Int           @id @default(autoincrement())
-  date_message     DateTime
+  date_message     DateTime      @default(now())
   contenu          String
   id_destinateur   Int
   id_conversation  Int
