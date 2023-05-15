@@ -41,7 +41,7 @@ export class SignalementOeuvreService {
     return signalements;
   }
 
-  async approveSignale(id_utilisateur: number, id: number) {
+  async traiteSignale(id_utilisateur: number, id: number, resultat: boolean) {
     const signalement = await this.prismaService.signalementOeuvre.findUnique({
       where: { id_signalement: id },
     });
@@ -56,6 +56,7 @@ export class SignalementOeuvreService {
         },
         data: {
           etatSignalement: true,
+          resultat,
           Administrateur: {
             connect: {
               id_admin: id_utilisateur,

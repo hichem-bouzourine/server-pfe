@@ -6,6 +6,9 @@ import {
   Patch,
   Param,
   UseGuards,
+  ParseIntPipe,
+  Query,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import { SignalementOeuvreService } from './signalement-oeuvre.service';
 import { CreateSignalementOeuvreDto } from './dto/create-signalement-oeuvre.dto';
@@ -34,10 +37,15 @@ export class SignalementOeuvreController {
   @UseGuards(AdminGuard)
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
-  update(
-    @Param('id') id: number,
+  traiteSignale(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('resultat', ParseBoolPipe) resultat: boolean,
     @CurrentUser('id_utilisateur') id_utilisateur: number,
   ) {
-    return this.signalementOeuvreService.approveSignale(id_utilisateur, id);
+    return this.signalementOeuvreService.traiteSignale(
+      id_utilisateur,
+      id,
+      resultat,
+    );
   }
 }
