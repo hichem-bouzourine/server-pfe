@@ -43,6 +43,9 @@ model Utilisateur {
 
   adresse             Adresse @relation(fields: [id_adresse], references: [id], onDelete: Cascade)
   
+  startedConversations       Conversation[] @relation("startedConvBy")
+  repliedConversations       Conversation[] @relation("repliedConvTo")
+
   messages            Message[]
   Sauvegarde          Sauvegarde[] 
 
@@ -72,7 +75,6 @@ model Artisan {
   
   Oeuvres          Oeuvre[]
   Commandes        Commande[]       
-  Conversation     Conversation[]
   Reponse          Reponse[]        
 }
 
@@ -85,7 +87,6 @@ model Client {
   
   
   Achats             Achat[]
-  Conversation       Conversation[]
   Notes              Note[] 
   Avis               Avis[] 
   SignalementOeuvre  SignalementOeuvre[] 
@@ -270,11 +271,11 @@ model Achat {
 
 model Conversation {
   id_conversation  Int        @id @default(autoincrement())
-  id_client        Int
-  id_artisan       Int
+  id_user1         Int
+  id_user2         Int
   
-  client           Client     @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
-  artisan          Artisan    @relation(fields: [id_artisan], references: [id_artisan], onDelete: Cascade)
+  user1            Utilisateur     @relation("startedConvBy" ,fields: [id_user1], references: [id_utilisateur], onDelete: Cascade)
+  user2            Utilisateur     @relation("repliedConvTo" ,fields: [id_user2], references: [id_utilisateur], onDelete: Cascade)
   
   messages         Message[]
 }

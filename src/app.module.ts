@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { CategorieModule } from './categorie/categorie.module';
 import { OeuvreModule } from './oeuvre/oeuvre.module';
+import { MessageModule } from './message/message.module';
 import { SignalementProfileModule } from './signalement-profile/signalement-profile.module';
 import { SignalementOeuvreModule } from './signalement-oeuvre/signalement-oeuvre.module';
 import { SignalementAvisModule } from './signalement-avis/signalement-avis.module';
@@ -35,6 +36,7 @@ import { AdresseModule } from './adresse/adresse.module';
     AdminModule,
     OeuvreModule,
     CategorieModule,
+    MessageModule,
     SignalementProfileModule,
     SignalementOeuvreModule,
     SignalementAvisModule,
