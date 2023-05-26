@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class CreateAvisDto {
   @IsNotEmpty()
   @IsNumber()
-  id_client: number;
+  id_utilisateur: number;
 
   @IsNotEmpty()
   @IsNumber()

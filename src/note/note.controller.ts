@@ -31,9 +31,9 @@ export class NoteController {
   @Get()
   findOne(
     @Query('id_oeuvre') id_oeuvre: number,
-    @Query('id_client') id_client: number,
+    @Query('id_utilisateur') id_utilisateur: number,
   ) {
-    return this.noteService.findOne(id_oeuvre, id_client);
+    return this.noteService.findOne(id_oeuvre, id_utilisateur);
   }
 
   @Get('avg')

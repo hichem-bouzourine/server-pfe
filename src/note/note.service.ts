@@ -11,15 +11,15 @@ import { PrismaService } from '../prisma/prisma.service';
 export class NoteService {
   constructor(private prismaService: PrismaService) {}
 
-  async create(createNoteDto: CreateNoteDto, id_client: number) {
+  async create(createNoteDto: CreateNoteDto, id_utilisateur: number) {
     const { id_oeuvre } = createNoteDto;
 
-    const client = await this.prismaService.client.findUnique({
-      where: { id_client },
+    const user = await this.prismaService.utilisateur.findUnique({
+      where: { id_utilisateur },
     });
 
-    if (!client) {
-      throw new NotFoundException(`Client with id ${id_client} not found`);
+    if (!user) {
+      throw new NotFoundException(`User with id ${id_utilisateur} not found`);
     }
 
     const oeuvre = await this.prismaService.oeuvre.findUnique({
@@ -32,8 +32,8 @@ export class NoteService {
 
     const existingNote = await this.prismaService.note.findUnique({
       where: {
-        id_client_id_oeuvre: {
-          id_client,
+        id_utilisateur_id_oeuvre: {
+          id_utilisateur,
           id_oeuvre,
         },
       },
@@ -41,27 +41,27 @@ export class NoteService {
 
     if (existingNote) {
       throw new BadRequestException(
-        `Note for Oeuvre ${id_oeuvre} by Client ${id_client} already exists`,
+        `Note for Oeuvre ${id_oeuvre} by User ${id_utilisateur} already exists`,
       );
     }
 
     const note = await this.prismaService.note.create({
       data: {
         ...createNoteDto,
-        id_client,
+        id_utilisateur,
       },
     });
 
     return note;
   }
 
-  async findOne(id_oeuvre: number, id_client: number) {
-    const client = await this.prismaService.client.findUnique({
-      where: { id_client },
+  async findOne(id_oeuvre: number, id_utilisateur: number) {
+    const client = await this.prismaService.utilisateur.findUnique({
+      where: { id_utilisateur },
     });
 
     if (!client) {
-      throw new NotFoundException(`Client with id ${id_client} not found`);
+      throw new NotFoundException(`Client with id ${id_utilisateur} not found`);
     }
 
     const oeuvre = await this.prismaService.oeuvre.findUnique({
@@ -74,8 +74,8 @@ export class NoteService {
 
     const note = await this.prismaService.note.findUnique({
       where: {
-        id_client_id_oeuvre: {
-          id_client,
+        id_utilisateur_id_oeuvre: {
+          id_utilisateur,
           id_oeuvre,
         },
       },
@@ -83,7 +83,7 @@ export class NoteService {
 
     if (!note) {
       throw new BadRequestException(
-        `Note for Oeuvre ${id_oeuvre} by Client ${id_client} doesn't exists`,
+        `Note for Oeuvre ${id_oeuvre} by User ${id_utilisateur} doesn't exists`,
       );
     }
 
@@ -143,14 +143,14 @@ export class NoteService {
   async update(
     id_oeuvre: number,
     updateNoteDto: UpdateNoteDto,
-    id_client: number,
+    id_utilisateur: number,
   ) {
-    await this.findOne(id_oeuvre, id_client);
+    await this.findOne(id_oeuvre, id_utilisateur);
 
     const updatedNote = await this.prismaService.note.update({
       where: {
-        id_client_id_oeuvre: {
-          id_client,
+        id_utilisateur_id_oeuvre: {
+          id_utilisateur,
           id_oeuvre,
         },
       },
@@ -162,13 +162,13 @@ export class NoteService {
     return updatedNote;
   }
 
-  async remove(id_oeuvre: number, id_client: number) {
-    await this.findOne(id_oeuvre, id_client);
+  async remove(id_oeuvre: number, id_utilisateur: number) {
+    await this.findOne(id_oeuvre, id_utilisateur);
 
     const deletedNote = await this.prismaService.note.delete({
       where: {
-        id_client_id_oeuvre: {
-          id_client,
+        id_utilisateur_id_oeuvre: {
+          id_utilisateur,
           id_oeuvre,
         },
       },

@@ -31,7 +31,7 @@ export class AvisController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: string) {
-    return this.avisService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.avisService.remove(id);
   }
 }

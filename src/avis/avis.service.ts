@@ -13,7 +13,16 @@ export class AvisService {
   ) {}
 
   async create(createAvisDto: CreateAvisDto) {
-    await this.clientService.getOne(createAvisDto.id_client);
+    const user = await this.prismaService.utilisateur.findUnique({
+      where: {
+        id_utilisateur: createAvisDto.id_utilisateur,
+      },
+    });
+
+    if (!user)
+      throw new NotFoundException(
+        `User with id '${createAvisDto.id_utilisateur}' not found`,
+      );
 
     await this.oeuvreService.findOne(createAvisDto.id_oeuvre);
 

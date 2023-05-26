@@ -49,6 +49,9 @@ model Utilisateur {
   messages            Message[]
   Sauvegarde          Sauvegarde[] 
 
+  Notes               Note[] 
+  Avis                Avis[] 
+
   reportedProfiles    SignalementProfil[] @relation("reported_profiles")
   reportedBy          SignalementProfil[] @relation("reports")
 }
@@ -87,8 +90,6 @@ model Client {
   
   
   Achats             Achat[]
-  Notes              Note[] 
-  Avis               Avis[] 
   SignalementOeuvre  SignalementOeuvre[] 
   SignalementAvis    SignalementAvis[] 
   ConsulteCategorie  ConsulteCategorie[] 
@@ -292,23 +293,23 @@ model Message {
 }
 
 model Note {
-  id_client    Int
+  id_utilisateur    Int
   id_oeuvre    Int
   note         Int
   
-  client       Client    @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
+  utilisateur  Utilisateur    @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
   oeuvre       Oeuvre    @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
-  @@id([id_client, id_oeuvre])
+  @@id([id_utilisateur, id_oeuvre])
 }
 
 model Avis {
   id_avis     Int         @id @default(autoincrement())
-  id_client   Int
+  id_utilisateur   Int
   id_oeuvre   Int
   contenu     String
   date_avis   DateTime    @default(now())
   
-  client      Client      @relation(fields: [id_client], references: [id_client], onDelete: Cascade)
+  utilisateur Utilisateur      @relation(fields: [id_utilisateur], references: [id_utilisateur], onDelete: Cascade)
   Oeuvre      Oeuvre      @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: Cascade)
   
   reponse     Reponse[]
