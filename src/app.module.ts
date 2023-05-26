@@ -21,6 +21,7 @@ import { ConsulteOeuvreModule } from './consulte-oeuvre/consulte-oeuvre.module';
 import { ConsulteCategorieModule } from './consulte-categorie/consulte-categorie.module';
 import { SauvegardeOeuvreModule } from './sauvegarde-oeuvre/sauvegarde-oeuvre.module';
 import { AdresseModule } from './adresse/adresse.module';
+import { AiApisModule } from './ai-apis/ai-apis.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { AdresseModule } from './adresse/adresse.module';
     ConsulteCategorieModule,
     SauvegardeOeuvreModule,
     AdresseModule,
+    AiApisModule,
   ],
   controllers: [],
   providers: [JwtStrategy],
