@@ -146,7 +146,7 @@ model Fournisseur {
   CommandesPrisesEnCharge      Commande[]
 }
 
-model Fourniture {
+model CategorieFourniture {
   id_fourniture         Int           @id @default(autoincrement())
   nom_fourniture        String
   photo                 String[]
@@ -164,7 +164,7 @@ model PublicationFourniture {
 
   
   fournisseur           Fournisseur  @relation(fields: [id_fournisseur], references: [id_fournisseur], onDelete: Cascade)
-  fourniture            Fourniture   @relation(fields: [id_fourniture], references: [id_fourniture], onDelete: Cascade)
+  categorieFourniture   CategorieFourniture   @relation(fields: [id_fourniture], references: [id_fourniture], onDelete: Cascade)
 
   @@id([id_fournisseur, id_fourniture])
 
@@ -182,7 +182,7 @@ model Commande {
   id_fournisseur    Int
   
   adresse           Adresse       @relation(fields: [adresse_livraison], references: [id], onDelete: Cascade)
-  fourniture        Fourniture    @relation(fields: [id_fourniture], references: [id_fourniture], onDelete: Cascade)
+  categorieFourniture  CategorieFourniture    @relation(fields: [id_fourniture], references: [id_fourniture], onDelete: Cascade)
   artisan           Artisan       @relation(fields: [id_artisan], references: [id_artisan], onDelete: Cascade)
   fournisseur       Fournisseur   @relation(fields: [id_fournisseur], references: [id_fournisseur], onDelete: Cascade)
   

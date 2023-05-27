@@ -22,6 +22,8 @@ import { ConsulteCategorieModule } from './consulte-categorie/consulte-categorie
 import { SauvegardeOeuvreModule } from './sauvegarde-oeuvre/sauvegarde-oeuvre.module';
 import { AdresseModule } from './adresse/adresse.module';
 import { AiApisModule } from './ai-apis/ai-apis.module';
+import { CategorieFournitureModule } from './categorie-fourniture/categorie-fourniture.module';
+import { PublicationFournitureModule } from './publication-fourniture/publication-fourniture.module';
 
 @Module({
   imports: [
@@ -49,6 +51,8 @@ import { AiApisModule } from './ai-apis/ai-apis.module';
     SauvegardeOeuvreModule,
     AdresseModule,
     AiApisModule,
+    CategorieFournitureModule,
+    PublicationFournitureModule,
   ],
   controllers: [],
   providers: [JwtStrategy],

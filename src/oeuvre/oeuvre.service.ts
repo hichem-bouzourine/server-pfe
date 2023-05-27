@@ -186,7 +186,6 @@ export class OeuvreService {
     const oeuvre = await this.prismaService.oeuvre.findUnique({
       where: { id_oeuvre: oeuvreId },
     });
-    console.log(oeuvre);
 
     if (!oeuvre) {
       throw new NotFoundException(`Oeuvre with ID ${oeuvreId} not found`);
