@@ -108,6 +108,28 @@ export class CategorieFournitureService {
     return publications;
   }
 
+  async findPublicationsByNomFournitures(nom_fourniture: string) {
+    const publications = await this.prismaService.categorieFourniture.findMany({
+      where: {
+        nom_fourniture: {
+          contains: nom_fourniture,
+          mode: 'insensitive', // case-insensitive search
+        },
+      },
+      include: {
+        PublicationFournitures: {},
+      },
+    });
+
+    if (!publications.length) {
+      throw new NotFoundException(
+        `No categories found with nom_categorie: ${nom_fourniture}`,
+      );
+    }
+
+    return publications;
+  }
+
   async update(
     id_fourniture: number,
     updateCategorieFournitureDto: UpdateCategorieFournitureDto,

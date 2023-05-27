@@ -38,15 +38,24 @@ export class CategorieFournitureController {
     return this.categorieFournitureService.findOne(id);
   }
 
-  @Get('search/:nom_fourniture')
+  @Get('search/name/:nom_fourniture')
   findByNomFourniture(@Param('nom_fourniture') nom_fourniture: string) {
     return this.categorieFournitureService.findByNomFourniture(nom_fourniture);
   }
 
-  @Get('publications/:id_fourniture')
+  @Get('search/id/:id_fourniture')
   findMany(@Param('id_fourniture', ParseIntPipe) id_fourniture: number) {
     return this.categorieFournitureService.getPublicationsByIDFourniture(
       id_fourniture,
+    );
+  }
+
+  @Get('search/name-pubs/:nom_fourniture')
+  findPublicationsByNomFournitures(
+    @Param('nom_fourniture') nom_fourniture: string,
+  ) {
+    return this.categorieFournitureService.findPublicationsByNomFournitures(
+      nom_fourniture,
     );
   }
 
