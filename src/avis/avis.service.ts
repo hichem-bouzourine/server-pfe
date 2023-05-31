@@ -48,6 +48,17 @@ export class AvisService {
       throw new NotFoundException('No avis found for this oeuvre');
     }
 
+    for (let element of avis) {
+      const { id_utilisateur } = element;
+
+      const user = await this.prismaService.utilisateur.findUnique({
+        where: { id_utilisateur },
+      });
+
+      const { password, ...rest } = user;
+      element['user'] = rest;
+    }
+
     return avis;
   }
 

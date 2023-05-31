@@ -17,12 +17,6 @@ enum Type_User {
   FOURNISSEUR
 }
 
-enum Resultat_signalement{
-  ACCEPTE
-  REFUSE
-  NON_TRAITE
-}
-
 model Utilisateur {
   id_utilisateur      Int      @id @default(autoincrement())
   nom                 String
