@@ -6,6 +6,9 @@ import {
   Patch,
   Param,
   UseGuards,
+  ParseBoolPipe,
+  ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { SignalementAvisService } from './signalement-avis.service';
 import { CreateSignalementAvisDto } from './dto/create-signalement-avis.dto';
@@ -34,10 +37,15 @@ export class SignalementAvisController {
   @UseGuards(AdminGuard)
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
-  update(
-    @Param('id') id: number,
+  traiteSignale(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('resultat', ParseBoolPipe) resultat: boolean,
     @CurrentUser('id_utilisateur') id_utilisateur: number,
   ) {
-    return this.signalementAvisService.approveSignale(id_utilisateur, id);
+    return this.signalementAvisService.traiteSignale(
+      id_utilisateur,
+      id,
+      resultat,
+    );
   }
 }
