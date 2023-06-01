@@ -25,6 +25,7 @@ import { AiApisModule } from './ai-apis/ai-apis.module';
 import { CategorieFournitureModule } from './categorie-fourniture/categorie-fourniture.module';
 import { PublicationFournitureModule } from './publication-fourniture/publication-fourniture.module';
 import { TechniqueModule } from './technique/technique.module';
+import { MateriauModule } from './materiau/materiau.module';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { TechniqueModule } from './technique/technique.module';
     CategorieFournitureModule,
     PublicationFournitureModule,
     TechniqueModule,
+    MateriauModule,
   ],
   controllers: [],
   providers: [JwtStrategy],
