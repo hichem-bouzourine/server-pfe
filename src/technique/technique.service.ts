@@ -6,6 +6,7 @@ import {
 import { CreateTechniqueDto } from './dtos/create-technique.dto';
 import { UpdateTechniqueDto } from './dtos/update-technique.dto';
 import { PrismaService } from '../prisma/prisma.service';
+import { Technique } from '@prisma/client';
 
 @Injectable()
 export class TechniqueService {
@@ -58,6 +59,23 @@ export class TechniqueService {
     }
 
     return technique;
+  }
+
+  async findByNomTechnique(nom: string): Promise<Technique[]> {
+    const techniques = await this.prismaService.technique.findMany({
+      where: {
+        nom: {
+          contains: nom,
+          mode: 'insensitive', // case-insensitive search
+        },
+      },
+    });
+
+    if (!techniques.length) {
+      throw new NotFoundException(`No techniques found with nom: ${nom}`);
+    }
+
+    return techniques;
   }
 
   async update(id: number, updateTechniqueDto: UpdateTechniqueDto) {

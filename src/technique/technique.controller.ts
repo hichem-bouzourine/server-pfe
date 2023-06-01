@@ -36,6 +36,11 @@ export class TechniqueController {
     return this.techniqueService.findOne(id);
   }
 
+  @Get('search/:nom_technique')
+  findByNomTechnique(@Param('nom_technique') nom_technique: string) {
+    return this.techniqueService.findByNomTechnique(nom_technique);
+  }
+
   @UseGuards(AdminGuard)
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
