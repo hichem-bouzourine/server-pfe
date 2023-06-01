@@ -81,4 +81,14 @@ export class AdminController {
   getUsersPerTypeStats() {
     return this.adminService.getUsersPerTypeStats();
   }
+
+  @Get('stats/signalementsTraite')
+  getTotalSignalementsTraite() {
+    return this.adminService.getTotalSignalementsTraite();
+  }
+
+  @Get('stats/signalementsNonTraite')
+  getTotalSignalementsNonTraite() {
+    return this.adminService.getTotalSignalementsNonTraite();
+  }
 }

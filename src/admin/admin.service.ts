@@ -419,4 +419,64 @@ export class AdminService {
 
     return result;
   }
+
+  async getTotalSignalementsTraite() {
+    const signalementsProfileTraite =
+      await this.prismaService.signalementProfil.findMany({
+        where: {
+          etatSignalement: true,
+        },
+      });
+
+    const signalementsOeuvreTraite =
+      await this.prismaService.signalementOeuvre.findMany({
+        where: {
+          etatSignalement: true,
+        },
+      });
+
+    const signalementsAvisTraite =
+      await this.prismaService.signalementAvis.findMany({
+        where: {
+          etatSignalement: true,
+        },
+      });
+
+    const count =
+      signalementsProfileTraite.length +
+      signalementsOeuvreTraite.length +
+      signalementsAvisTraite.length;
+
+    return count;
+  }
+
+  async getTotalSignalementsNonTraite() {
+    const signalementsProfileTraite =
+      await this.prismaService.signalementProfil.findMany({
+        where: {
+          etatSignalement: false,
+        },
+      });
+
+    const signalementsOeuvreTraite =
+      await this.prismaService.signalementOeuvre.findMany({
+        where: {
+          etatSignalement: false,
+        },
+      });
+
+    const signalementsAvisTraite =
+      await this.prismaService.signalementAvis.findMany({
+        where: {
+          etatSignalement: false,
+        },
+      });
+
+    const count =
+      signalementsProfileTraite.length +
+      signalementsOeuvreTraite.length +
+      signalementsAvisTraite.length;
+
+    return count;
+  }
 }
