@@ -67,6 +67,7 @@ export class AuthService {
    */
   async update(id_utilisateur: number, type: string, body: UpdateUserDto) {
     const {
+      document,
       preference_art,
       annee_debut_experience,
       description,
@@ -98,6 +99,7 @@ export class AuthService {
               description,
               specialite,
               statutCompte,
+              document,
             },
           });
         } catch (error) {
@@ -115,6 +117,7 @@ export class AuthService {
           data: {
             raison_social,
             statutCompte,
+            document,
           },
         });
         break;

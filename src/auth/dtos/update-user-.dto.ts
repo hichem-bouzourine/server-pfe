@@ -82,4 +82,8 @@ export class UpdateUserDto {
   @IsOptional()
   @IsBoolean()
   statutCompte?: boolean;
+
+  @IsString()
+  @IsOptional()
+  document?: string;
 }

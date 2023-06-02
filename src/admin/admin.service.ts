@@ -219,6 +219,7 @@ export class AdminService {
     if (!user) throw new NotFoundException('User not found');
 
     const {
+      document,
       annee_debut_experience,
       description,
       specialite,
@@ -249,6 +250,7 @@ export class AdminService {
             description,
             specialite,
             statutCompte,
+            document,
           },
         });
         break;
@@ -261,6 +263,7 @@ export class AdminService {
           data: {
             raison_social,
             statutCompte,
+            document,
           },
         });
         break;

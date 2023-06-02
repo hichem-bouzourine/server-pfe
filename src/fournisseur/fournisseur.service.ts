@@ -19,6 +19,7 @@ export class FournisseurService {
 
   async createFournisseur(body: CreateFournisseurDto) {
     const {
+      document,
       raison_social,
       statutCompte,
       date_de_naissance,
@@ -62,6 +63,7 @@ export class FournisseurService {
           create: {
             raison_social,
             statutCompte,
+            document,
           },
         },
       },
@@ -98,6 +100,7 @@ export class FournisseurService {
         },
         raison_social: true,
         statutCompte: true,
+        document: true,
       },
     });
 
@@ -119,6 +122,7 @@ export class FournisseurService {
         },
         raison_social: true,
         statutCompte: true,
+        document: true,
       },
     });
 

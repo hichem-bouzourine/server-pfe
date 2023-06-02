@@ -20,6 +20,7 @@ export class ArtisanService {
 
   async createArtisan(body: CreateArtisanDto) {
     const {
+      document,
       description,
       annee_debut_experience,
       specialite,
@@ -76,6 +77,7 @@ export class ArtisanService {
         date_inscription: new Date(),
         Artisan: {
           create: {
+            document,
             description,
             annee_debut_experience,
             specialite,
@@ -118,6 +120,7 @@ export class ArtisanService {
         annee_debut_experience: true,
         specialite: true,
         statutCompte: true,
+        document: true,
       },
     });
 
@@ -141,6 +144,7 @@ export class ArtisanService {
         annee_debut_experience: true,
         specialite: true,
         statutCompte: true,
+        document: true,
       },
     });
 
@@ -200,6 +204,7 @@ export class ArtisanService {
         annee_debut_experience: true,
         specialite: true,
         statutCompte: true,
+        document: true,
       },
     });
 

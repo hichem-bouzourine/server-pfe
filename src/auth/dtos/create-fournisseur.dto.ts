@@ -9,4 +9,8 @@ export class CreateFournisseurDto extends CreateUserDto {
   @IsBoolean()
   @IsNotEmpty()
   statutCompte: boolean;
+
+  @IsString()
+  @IsNotEmpty()
+  document: string;
 }
