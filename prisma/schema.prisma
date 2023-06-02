@@ -330,7 +330,8 @@ model SignalementProfil {
   id_rapporteur     Int?
   id_admin          Int?
   etatSignalement   Boolean      
-  resultat          Boolean?      
+  resultat          Boolean? 
+  date_resultat     DateTime?           
 
   UtilisateurSignale       Utilisateur?      @relation("reported_profiles" ,fields: [id_signale], references: [id_utilisateur], onDelete: SetNull)
   UtilisateurRapporteur    Utilisateur?      @relation("reports" ,fields: [id_rapporteur], references: [id_utilisateur], onDelete: SetNull)
@@ -345,7 +346,8 @@ model SignalementOeuvre {
   id_client         Int?
   id_admin          Int?
   etatSignalement   Boolean      
-  resultat          Boolean?      
+  resultat          Boolean?  
+  date_resultat     DateTime?      
 
   Oeuvre            Oeuvre?   @relation(fields: [id_oeuvre], references: [id_oeuvre], onDelete: SetNull)
   Client            Client?      @relation(fields: [id_client], references: [id_client], onDelete: SetNull)
@@ -360,7 +362,8 @@ model SignalementAvis {
   id_client         Int?
   id_admin          Int?
   etatSignalement   Boolean
-  resultat          Boolean?      
+  resultat          Boolean?  
+  date_resultat     DateTime?      
 
   Avis              Avis?    @relation(fields: [id_avis], references: [id_avis], onDelete: SetNull)
   Client            Client?      @relation(fields: [id_client], references: [id_client], onDelete: SetNull)

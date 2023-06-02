@@ -57,6 +57,7 @@ export class SignalementOeuvreService {
         data: {
           etatSignalement: true,
           resultat,
+          date_resultat: new Date(),
           Administrateur: {
             connect: {
               id_admin: id_utilisateur,
