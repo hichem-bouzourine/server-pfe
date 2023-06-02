@@ -91,4 +91,9 @@ export class AdminController {
   getTotalSignalementsNonTraite() {
     return this.adminService.getTotalSignalementsNonTraite();
   }
+
+  @Get('stats/getUsersCountByMonth')
+  getUsersCountByMonth() {
+    return this.adminService.getUsersCountByMonth();
+  }
 }

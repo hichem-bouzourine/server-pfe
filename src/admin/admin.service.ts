@@ -479,4 +479,42 @@ export class AdminService {
 
     return count;
   }
+
+  async getUsersCountByMonth() {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+
+    const response = (await this.prismaService.$queryRaw`
+      SELECT trim(to_char(date_inscription, 'Month')) AS month, COUNT(*) AS count
+      FROM "Utilisateur"
+      GROUP BY month
+    `) as {
+      month: string;
+      count: number;
+    }[];
+
+    const countByMonth = {};
+    response.forEach(({ month, count }) => {
+      countByMonth[month] = Number(count);
+    });
+
+    const result = months.map((month) => ({
+      x: month,
+      y: countByMonth[month] || 0,
+    }));
+
+    return result;
+  }
 }
