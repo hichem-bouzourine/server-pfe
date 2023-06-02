@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsBoolean,
   IsDate,
@@ -26,6 +27,7 @@ export class UpdateUserDto {
 
   @IsOptional()
   @IsDate()
+  @Type(() => Date)
   date_de_naissance?: Date;
 
   @IsOptional()
@@ -50,6 +52,7 @@ export class UpdateUserDto {
 
   @IsOptional()
   @IsDate()
+  @Type(() => Date)
   date_inscription?: Date;
 
   @IsOptional()
