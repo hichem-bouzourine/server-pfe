@@ -9,7 +9,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Oeuvre } from '@prisma/client';
 import { CreateOeuvreDto } from './dtos/create-oeuvre.dto';
 import { UpdateOeuvreDto } from './dtos/update-oeuvre.dto';
-import { CategorieService } from 'src/categorie/categorie.service';
+import { CategorieService } from '../categorie/categorie.service';
 
 @Injectable()
 export class OeuvreService {

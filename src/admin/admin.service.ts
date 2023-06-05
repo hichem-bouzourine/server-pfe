@@ -9,7 +9,7 @@ import { hashPassword } from '../auth/common/hashPassword';
 import { PrismaService } from '../prisma/prisma.service';
 import { signToken } from '../utils/signtoken.jwt';
 import { utilisateurSelect } from '../types/utilisateur-select';
-import { UpdateUserDto } from 'src/auth/dtos/update-user-.dto';
+import { UpdateUserDto } from '../auth/dtos/update-user-.dto';
 import { Type_User } from '@prisma/client';
 import { AdresseService } from '../adresse/adresse.service';
 

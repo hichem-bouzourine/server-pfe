@@ -12,7 +12,7 @@ import {
 import { NoteService } from './note.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
-import { CurrentUser } from 'src/auth/decorators/get-current-user.decorator';
+import { CurrentUser } from '../auth/decorators/get-current-user.decorator';
 import { AuthGuard } from '@nestjs/passport';
 
 @UseGuards(AuthGuard('jwt'))

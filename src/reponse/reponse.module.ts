@@ -5,7 +5,7 @@ import { OeuvreService } from '../oeuvre/oeuvre.service';
 import { AvisService } from '../avis/avis.service';
 import { CategorieService } from '../categorie/categorie.service';
 import { ClientService } from '../client/client.service';
-import { AdresseService } from 'src/adresse/adresse.service';
+import { AdresseService } from '../adresse/adresse.service';
 
 @Module({
   controllers: [ReponseController],

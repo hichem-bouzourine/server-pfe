@@ -14,7 +14,7 @@ import { PublicationFournitureService } from './publication-fourniture.service';
 import { CreatePublicationFournitureDto } from './dto/create-publication-fourniture.dto';
 import { UpdatePublicationFournitureDto } from './dto/update-publication-fourniture.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { CurrentUser } from 'src/auth/decorators/get-current-user.decorator';
+import { CurrentUser } from '../auth/decorators/get-current-user.decorator';
 
 @Controller('publication-fourniture')
 export class PublicationFournitureController {

@@ -6,10 +6,10 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
-import { signToken } from 'src/utils/signtoken.jwt';
+import { signToken } from '../utils/signtoken.jwt';
 import { UpdateUserDto } from './dtos/update-user-.dto';
 import { Type_User } from '@prisma/client';
-import { utilisateurSelect } from 'src/types/utilisateur-select';
+import { utilisateurSelect } from '../types/utilisateur-select';
 
 const scrypt = promisify(_scrypt);
 

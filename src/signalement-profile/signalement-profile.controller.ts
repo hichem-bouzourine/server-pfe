@@ -13,8 +13,8 @@ import {
 import { SignalementProfileService } from './signalement-profile.service';
 import { CreateSignalementProfileDto } from './dto/create-signalement-profile.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { AdminGuard } from 'src/guards/admin.guard';
-import { CurrentUser } from 'src/auth/decorators/get-current-user.decorator';
+import { AdminGuard } from '../guards/admin.guard';
+import { CurrentUser } from '../auth/decorators/get-current-user.decorator';
 
 @Controller('signalement-profile')
 export class SignalementProfileController {

@@ -1,5 +1,5 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { CurrentUser } from 'src/auth/decorators/get-current-user.decorator';
+import { CurrentUser } from '../auth/decorators/get-current-user.decorator';
 import { MessageService } from './message.service';
 import { AuthGuard } from '@nestjs/passport';
 

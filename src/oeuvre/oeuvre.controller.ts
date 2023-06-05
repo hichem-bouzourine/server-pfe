@@ -13,7 +13,7 @@ import {
 import { OeuvreService } from './oeuvre.service';
 import { CreateOeuvreDto } from './dtos/create-oeuvre.dto';
 import { UpdateOeuvreDto } from './dtos/update-oeuvre.dto';
-import { CurrentUser } from 'src/auth/decorators/get-current-user.decorator';
+import { CurrentUser } from '../auth/decorators/get-current-user.decorator';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('oeuvre')

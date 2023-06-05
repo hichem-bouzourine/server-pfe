@@ -13,7 +13,7 @@ import { CategorieFournitureService } from './categorie-fourniture.service';
 import { CreateCategorieFournitureDto } from './dto/create-categorie-fourniture.dto';
 import { UpdateCategorieFournitureDto } from './dto/update-categorie-fourniture.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { AdminGuard } from 'src/guards/admin.guard';
+import { AdminGuard } from '../guards/admin.guard';
 
 @Controller('categorie-fourniture')
 export class CategorieFournitureController {

@@ -12,7 +12,7 @@ import {
 import { MateriauService } from './materiau.service';
 import { CreateMateriauDto } from './dtos/create-materiau.dto';
 import { UpdateMateriauDto } from './dtos/update-materiau.dto';
-import { AdminGuard } from 'src/guards/admin.guard';
+import { AdminGuard } from '../guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('materiau')
