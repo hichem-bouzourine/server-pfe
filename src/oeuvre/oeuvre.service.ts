@@ -17,6 +17,7 @@ export class OeuvreService {
     private prismaService: PrismaService,
     private categorieService: CategorieService,
   ) {}
+
   /**
    * Retrieves all oeuvres
    * @returns {Promise<Oeuvre[]>} Promise containing all oeuvres
@@ -133,6 +134,7 @@ export class OeuvreService {
 
     return oeuvres;
   }
+
   /**
    * Creates a new oeuvre.
    *
@@ -154,8 +156,15 @@ export class OeuvreService {
       );
     }
 
-    const { date_publication, date_realisation, id_categorie, ...rest } =
-      createOeuvreDto;
+    const {
+      date_publication,
+      date_realisation,
+      id_categorie,
+      techniques,
+      materiaux,
+      techniques_et_materiaux,
+      ...rest
+    } = createOeuvreDto;
 
     // check if `id_categorie` is a categorie
     await this.categorieService.findOne(id_categorie);
@@ -169,6 +178,33 @@ export class OeuvreService {
         ...rest,
       },
     });
+
+    // Add the used `Techniques & Materiaux`
+    if (oeuvre) {
+      if (techniques.length) {
+        for (let i = 0; i < techniques.length; i++) {
+          const element = techniques[i];
+          await this.prismaService.utiliseTechnique.create({
+            data: {
+              id_oeuvre: oeuvre.id_oeuvre,
+              id_technique: element,
+            },
+          });
+        }
+      }
+      if (materiaux.length) {
+        for (let i = 0; i < materiaux.length; i++) {
+          const element = materiaux[i];
+          await this.prismaService.utiliseMateriau.create({
+            data: {
+              id_oeuvre: oeuvre.id_oeuvre,
+              id_materiau: element,
+            },
+          });
+        }
+      }
+    }
+
     return oeuvre;
   }
 

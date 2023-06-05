@@ -6,6 +6,7 @@ import {
   ArrayNotEmpty,
   IsNumber,
   Min,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateOeuvreDto {
@@ -30,7 +31,7 @@ export class CreateOeuvreDto {
   description: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   techniques_et_materiaux: string;
 
   @IsNumber()
@@ -51,8 +52,11 @@ export class CreateOeuvreDto {
   @IsNotEmpty()
   id_categorie: number;
 
-  // @IsNumber()
-  // @Min(1)
-  // @IsNotEmpty()
-  // id_artisan: number;
+  @IsArray()
+  @IsOptional()
+  techniques: number[];
+
+  @IsArray()
+  @IsOptional()
+  materiaux: number[];
 }

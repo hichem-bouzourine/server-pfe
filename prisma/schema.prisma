@@ -191,7 +191,7 @@ model Oeuvre {
   contexte_realisation     String
   dimensions               String
   description              String
-  techniques_et_materiaux  String
+  techniques_et_materiaux  String?
   prix                     Float
   date_publication         DateTime
   images_oeuvre            String[]
